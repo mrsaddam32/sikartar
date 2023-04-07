@@ -31,5 +31,7 @@ Route::middleware(['isLogged'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
         Route::get('/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
+        Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('dashboard.profile.update');
+        Route::patch('/profile/password/{id}', [DashboardController::class, 'updatePassword'])->name('dashboard.profile.updatePassword');
     });
 });
