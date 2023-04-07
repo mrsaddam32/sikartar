@@ -9,6 +9,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -111,7 +112,7 @@ class DashboardController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -122,6 +123,20 @@ class DashboardController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+
+        if ($request->hasFile('image')) {
+            $oldImagePath = $user->photo_path;
+            $imagePath = $request->file('image')->hashName();
+            $request->file('image')->storeAs('public/images', $imagePath);
+
+            $user->photo_path = 'storage/images/' . $imagePath;
+            $user->photo_name = $request->file('image')->getClientOriginalName();
+
+            // Delete old image
+            if ($oldImagePath && Storage::exists($oldImagePath)) {
+                Storage::delete($oldImagePath);
+            }
+        }
 
         $user->save();
 

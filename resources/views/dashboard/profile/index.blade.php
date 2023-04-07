@@ -9,7 +9,11 @@
       <div class="row gx-4">
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
-            <img src="{{ asset('img/bruce-mars.jpg') }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            @if ($user->photo_path)
+              <img src="{{ asset($user->photo_path) }}" alt="profile_image" class="w-100 h-100 border-radius-lg shadow-sm">
+            @else
+              <img src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            @endif
           </div>
         </div>
         <div class="col-auto my-auto">
@@ -93,7 +97,7 @@
             </div>
           </div>
           <div class="card-body p-3">
-            <form action="{{ route('dashboard.profile.update', $user->id) }}" method="POST">
+            <form action="{{ route('dashboard.profile.update', $user->id) }}" method="POST"enctype="multipart/form-data">
               @method('patch')
               @csrf
               <div class="row">
