@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,14 @@ Route::middleware(['isLogged'])->group(function () {
         Route::get('/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('dashboard.profile.update');
         Route::patch('/profile/password/{id}', [DashboardController::class, 'updatePassword'])->name('dashboard.profile.updatePassword');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('users.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+        Route::patch('/update/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 });
