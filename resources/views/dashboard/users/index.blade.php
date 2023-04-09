@@ -1,6 +1,7 @@
 @extends('dashboard.layouts.main')
 
 @section('container')
+
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <div class="container-fluid py-4">
         <div class="row">
@@ -22,37 +23,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    @if ($user->photo_path)
-                                                        <img src="{{ asset($user->photo_path) }}" alt="profile_image" class="avatar avatar-sm me-3">
-                                                    @else
-                                                        <img src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" alt="profile_image" class="avatar avatar-sm me-3">
-                                                    @endif
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{ $user->name }}</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $user->email }}</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            @if ($user->role->role_id == 1)
-                                                <span class="badge badge-sm bg-gradient-danger">{{ $user->role->role_name }}</span>
-                                            @else
-                                                <span class="badge badge-sm bg-gradient-info">{{ $user->role->role_name }}</span>
-                                            @endif
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">{{ $user->created_at->format('d F Y') }}</span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -66,7 +36,11 @@
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-{{-- <script>
+<!-- MomentJS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<!-- DataTables MomentJS plugin -->
+<script src="https://cdn.datatables.net/plug-ins/1.11.3/dataRender/datetime.js"></script>
+<script type="text/javascript">
     $(function () {
         var table = $('.yajra-datatables').DataTable({
             processing: true,
@@ -75,11 +49,13 @@
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
-                {data: 'roles', name: 'roles'},
-                {data: 'created_at', name: 'created_at'},
+                {data: 'role', name: 'role'},
+                {data: 'created_at', name: 'created_at',render: function (data,type,row) {
+                    return moment(data).format('DD MMMM YYYY');
+                }},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
     });
-</script> --}}
+</script>
 @endsection
