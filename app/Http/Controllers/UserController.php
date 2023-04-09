@@ -16,41 +16,28 @@ class UserController extends Controller
      */
     public function index()
     {
+        // if (request()->ajax()) {
+        //     $userRole = Auth::user()->role_id;
+        //     $users = User::with('role')->where('role_id', '!=', $userRole)->get();
+
+        //     return DataTables::eloquent($users)
+        //         ->addIndexColumn()
+        //         ->addColumn('role', function ($user) {
+        //             return $user->role->role_name;
+        //         })
+        //         ->addColumn('action', function ($row) {
+        //             $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">Edit</a>';
+        //             $btn = $btn . ' <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+
+        //             return $btn;
+        //         })
+        //         ->rawColumns(['role', 'action'])
+        //         ->toJson();
+        // }
         $users = User::all();
 
-        if (request()->ajax()) {
-            return DataTables::of($users)
-                ->addIndexColumn()
-                ->addColumn('photo_path', function ($user) {
-                    if ($user->photo_path) {
-                        return '<img src="' . asset('storage/' . $user->photo_path) . '" alt="photo" width="50" height="50">';
-                    } else {
-                        return '<img src="' . asset('storage/users/default.png') . '" alt="photo" width="50" height="50">';
-                    }
-                })
-                ->addColumn('role', function ($user) {
-                    if ($user->role_id == 1) {
-                        return '<span class="badge badge-sm bg-gradient-danger">
-                                    ' . $user->role->role_name . '
-                                </span>';
-                    } else {
-                        return '<span class="badge badge-sm bg-gradient-info">
-                                    ' . $user->role->role_name . '
-                                </span>';
-                    }
-                })
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">Edit</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-
-                    return $btn;
-                })
-                ->rawColumns(['role', 'action'])
-                ->toJson();
-        }
-
         return view('dashboard.users.index', [
-            'title' => 'Users',
+            'title' => 'All Users',
             'active' => 'users',
             'users' => $users,
         ]);
