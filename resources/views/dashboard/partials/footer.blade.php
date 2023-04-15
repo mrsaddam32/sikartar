@@ -1,11 +1,8 @@
-<footer class="footer pt-3 ps-3">
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-lg-between">
-        <div class="col-lg-6 mb-lg-0 mb-4">
-          <div class="copyright text-center text-sm text-muted text-lg-start">
-            &copy; {{ date('Y') }} <span class="fw-bold">{{ config('app.name') }}</span> - All Rights Reserved
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Main Footer -->
+<footer class="main-footer">
+  <strong>Copyright &copy; {{ date('Y') }} <a href="https://google.com" target="_blank">{{ config('app.name') }}</a>.</strong>
+  All rights reserved.
+  <div class="float-right d-none d-sm-inline-block">
+    <b>Version </b>{{ Illuminate\Foundation\Application::VERSION }}
+  </div>
 </footer>

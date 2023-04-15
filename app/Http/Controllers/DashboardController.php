@@ -25,14 +25,14 @@ class DashboardController extends Controller
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('dashboard.admin.index', [
-                'title' => 'Dashboard',
+                'title' => 'Dashboard Admin',
                 'active' => 'dashboard',
                 'users' => $users,
                 'user' => $user,
             ]);
         } else {
             return view('dashboard.user.index', [
-                'title' => 'Dashboard',
+                'title' => 'Dashboard User',
                 'active' => 'dashboard',
                 'user' => $user,
             ]);
