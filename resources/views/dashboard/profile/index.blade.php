@@ -11,16 +11,16 @@
           <h1 class="m-0">Profile</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
-      @if (session()->has('success'))
-        <div class="alert alert-success w-50" role="alert">
-          {{ session('success') }}
-        </div>
+      {{-- @if (session()->has('success'))
+          <script>
+              toastr.success('{{ session('success') }}');
+          </script>
       @endif
       @if (session()->has('error'))
-        <div class="alert alert-danger w-50" role="alert">
-          {{ session('error') }}
-        </div>
-      @endif
+          <script>
+              toastr.error('{{ session('error') }}');
+          </script>
+      @endif --}}
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content-header -->
@@ -40,7 +40,7 @@
                     alt="{{ $user->name }}">
                 @else
                 <img class="profile-user-img img-fluid img-circle"
-                    src="../../dist/img/user4-128x128.jpg"
+                    src="{{ asset('dist/img/user4-128x128.jpg') }}"
                     alt="{{ $user->name }}">
                 @endif
               </div>
@@ -54,10 +54,10 @@
               @endif
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                  <b>Email</b> <a class="float-right">{{ $user->email }}</a>
+                  <b>Email</b> <span class="float-right text-primary">{{ $user->email }}</span>
                 </li>
                 <li class="list-group-item">
-                  <b>Account Since</b> <a class="float-right">{{ $user->created_at->format('d F Y')}}</a>
+                  <b>Account Since</b> <span class="float-right text-primary">{{ $user->created_at->format('d F Y')}}</span>
                 </li>
               </ul>
 
@@ -113,19 +113,13 @@
           <div class="card">
             <div class="card-header p-2">
               <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Update Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="#change_password" data-toggle="tab">Change Password</a></li>
               </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
               <div class="tab-content">
-                <div class="tab-pane 
-                @if (session()->has('success'))
-                  active
-                @elseif (session()->has('error'))
-                  active
-                @endif
-                " id="change_password">
+                <div class="tab-pane" id="change_password">
                   <form action="{{ route('dashboard.profile.updatePassword', $user->id) }}" method="POST">
                     @method('patch')
                     @csrf
@@ -166,7 +160,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Save</button>
+                        <button type="submit" class="btn bg-primary w-100 mt-4 mb-0">Save</button>
                       </div>
                     </div>
                   </form>
@@ -214,7 +208,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Save</button>
+                        <button type="submit" class="btn bg-primary w-100 mt-4 mb-0">Save</button>
                       </div>
                     </div>
                   </form>
@@ -233,4 +227,24 @@
   </section>
   <!-- /.content -->
 </div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+      // Set toastr options
+      toastr.options = {
+          "positionClass": "toast-top-right",
+      }
+
+      // Show success message
+      @if (session()->has('success'))
+          toastr.success('{{ session('success') }}');
+      @endif
+
+      // Show error message
+      @if (session()->has('error'))
+          toastr.error('{{ session('error') }}');
+      @endif
+  });
+</script>
 @endsection

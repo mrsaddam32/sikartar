@@ -44,7 +44,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item ml-3">
-              <a href="./index.html" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
+              <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
                 <i class="fas fa-users mr-2"></i>
                 <p>User Management</p>
               </a>

@@ -23,9 +23,9 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('role', function ($user) {
                     if ($user->role_id == 1) {
-                        return '<span class="badge badge-sm bg-gradient-danger w-100">' . $user->role->role_name . '</span>';
+                        return '<span class="w-100 text-uppercase badge bg-gradient-danger">' . $user->role->role_name . '</span>';
                     } else {
-                        return '<span class="badge badge-sm bg-gradient-info w-100">' . $user->role->role_name . '</span>';
+                        return '<span class="w-100 text-uppercase badge bg-gradient-info">' . $user->role->role_name . '</span>';
                     }
                 })
                 ->addColumn('created_at', function ($user) {
