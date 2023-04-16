@@ -50,7 +50,7 @@
               </a>
             </li>
             <li class="nav-item ml-3">
-              <a href="./index.html" class="nav-link">
+              <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles') ? 'active' : '' }}">
                 <i class="fas fa-users mr-2"></i>
                 <p>Roles Management</p>
               </a>

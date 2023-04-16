@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get();
+        $users = User::where('role_id', '!=', 1)->with('role')->get();
 
         if (request()->ajax()) {
             return DataTables::of($users)
@@ -32,29 +32,19 @@ class UserController extends Controller
                     return $user->created_at->format('d F Y');
                 })
                 ->addColumn('action', function ($user) {
-                    if (Auth::user()->role_id == 1) {
-                        return '
-                        <a href="#" class="btn btn-sm btn-icon-only text-warning" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                            <i class="fas fa-user-edit"></i>
-                        </a>
-                        <a href="#" class="btn btn-sm btn-icon-only text-danger" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                    return '
+                    <button type="button" class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#userModal"
+                    data-id="' . $user->id . '">
+                    Detail
+                  </button>
                     ';
-                    } else {
-                        return '
-                        <a href="#" class="btn btn-sm btn-icon-only text-light" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                            <i class="fas fa-user-edit"></i>
-                        </a>
-                    ';
-                    }
                 })
-                ->rawColumns(['user', 'role', 'action'])
+                ->rawColumns(['user', 'role', 'created_at', 'action'])
                 ->make(true);
         }
 
         return view('dashboard.users.index', [
-            'title' => 'Users',
+            'title' => 'Users Management',
             'active' => 'users',
         ], compact('users'));
     }
@@ -88,7 +78,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrfail($id);
+        return response()->json($user);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use DataTables;
 
 class RoleController extends Controller
 {
@@ -14,7 +15,32 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::all();
+
+        if (request()->ajax()) {
+            return DataTables::of($roles)
+                ->addIndexColumn()
+                ->addColumn('created_at', function ($role) {
+                    return $role->created_at->format('d F Y');
+                })
+                ->addColumn('action', function ($role) {
+                    return '
+                    <a href="#" class="btn btn-sm btn-icon-only text-warning" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-icon-only text-danger" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('dashboard.roles.index', [
+            'title' => 'Roles Management',
+            'active' => 'roles',
+        ], compact('roles'));
     }
 
     /**
