@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -33,10 +34,16 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function ($user) {
                     return '
-                    <button type="button" class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#userModal"
+                    <button type="button" class="mx-1 btn btn-md btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#userModal"
                     data-id="' . $user->id . '">
-                    Detail
-                  </button>
+                    <i class="fas fa-eye"></i>
+                    </button>
+                    <form action="' . route('users.destroy', $user->id) . '" method="POST" class="mx-1 d-inline">
+                    ' . csrf_field() . '
+                    ' . method_field('DELETE') . '
+                    <input type="hidden" name="id" value="' . $user->id . '">
+                    <button type="submit" name="name" class="btn btn-md btn-danger btn-delete"><i class="fas fa-trash"></i></button>
+                    </form>
                     ';
                 })
                 ->rawColumns(['user', 'role', 'created_at', 'action'])
@@ -102,7 +109,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrfail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'User updated successfully']);
     }
 
     /**
@@ -113,6 +135,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrfail($id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }

@@ -61,17 +61,8 @@
                             <div class="card card-primary card-outline">
                               <div class="card-body box-profile">
                                 <div class="text-center">
-                                  {{-- @if($user->photo_path)
-                                  <img class="profile-user-img img-fluid img-circle border-primary"
-                                      src="{{ asset($user->photo_path) }}"
-                                      alt="{{ $user->name }}">
-                                  @else
-                                  <img class="profile-user-img img-fluid img-circle"
-                                      src="{{ asset('dist/img/user4-128x128.jpg') }}"
-                                      alt="{{ $user->name }}">
-                                      @endif --}}
-                                    <img class="profile-user-img img-fluid img-circle"
-                                          src="{{ asset('dist/img/user4-128x128.jpg') }}">
+                                    <img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture"
+                                    id="user-photo">
                                 </div>
                                 <h3 class="profile-username text-center" id="user-name"></h3>
                                 <ul class="list-group list-group-unbordered mb-3">
@@ -82,30 +73,32 @@
                                     <b>Account Since</b> <span class="float-right" id="user-created-at"></span>
                                   </li>
                                 </ul>
-                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                               </div>
                               <!-- /.card-body -->
                             </div>
                             <!-- /.card -->
                           </div>
                           <div class="col-lg-8">
-                            <form action="#" method="POST">
+                            <form id="user-form">
                               @csrf
-                              @method('PATCH')
+                              @method('patch')
                               <input type="hidden" name="id" id="id">
                               <div class="form-group mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name">
+                                  <label for="name">Name</label>
+                                  <input type="text" class="form-control" id="name" name="name">
+                                  <span class="invalid-feedback"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                  <label for="email">Email address</label>
+                                  <input type="email" class="form-control" id="email" name="email">
+                                  <span class="invalid-feedback"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                  <label for="role">Role</label>
+                                  <select class="form-control" id="role" name="role"></select>
+                                  <span class="invalid-feedback"></span>
                               </div>
-                              <div class="form-group mb-3">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email">
-                              </div>
-                              <div class="form-group mb-3">
-                                <label for="role">Role</label>
-                                <select class="form-control" id="role" name="role"></select>
-                              </div>
-                              <button type="submit" class="btn btn-primary">Save</button>
+                              <button type="submit" class="btn btn-primary btn-update">Save</button>
                             </form>
                           </div>
                         </div>
@@ -116,7 +109,7 @@
                   </div>
               </div>
           </div>
-      </div>      
+        </div>      
       </section>
       <!-- /.content -->
   </div>
@@ -124,9 +117,10 @@
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(function () {
-        var table = $('#yajra-datatables').DataTable({
+        let table = $('#yajra-datatables').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
             ajax: "{{ route('users.index') }}",
             columns: [
                 {data: 'name', name: 'name'},
@@ -156,13 +150,14 @@
 
         $('#yajra-datatables').on('click', '.btn-detail', function (e) {
             e.preventDefault();
-            var id = $(this).data('id');
+            let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('users.index') }}" + '/detail/' + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function (data) {
                     $('#id').val(data.id);
+                    data.photo_path ? $('#user-photo').attr('src', '{{ asset('') }}' + data.photo_path) : $('#user-photo').attr('src', '{{ asset('dist/img/user4-128x128.jpg') }}');
                     $('#user-name').text(data.name);
                     $('#user-email').text(data.email);
                     $('#user-created-at').text(moment(data.created_at).format('DD MMMM YYYY'));
@@ -174,7 +169,6 @@
             });
         });
 
-        // Menangkap data user dari card profile dan mengisi ke form input
         $('#userModal').on('show.bs.modal', function (event) {
             let roles = [
               {id: 1, name: 'admin'},
@@ -196,6 +190,33 @@
 
             $('#name').val($('#user-name').text());
             $('#email').val($('#user-email').text());
+        });
+
+        $('#user-form').on('submit', function (e) {
+            e.preventDefault();
+            let form = $(this);
+            let id = $('#id').val();
+            $.ajax({
+                url: "{{ route('users.update', ':id') }}".replace(':id', id),
+                type: "POST",
+                data: form.serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    $('#userModal').modal('hide');
+                    table.draw();
+                    toastr.success(data.message, 'Success!');
+                },
+                error: function (data) {
+                    let errors = data.responseJSON.errors;
+                    $.each(errors, function (key, value) {
+                        $('#' + key)
+                            .closest('.form-group')
+                            .find('.invalid-feedback')
+                            .addClass('d-block')
+                            .text(value);
+                    });
+                }
+            });
         });
     });
 </script>

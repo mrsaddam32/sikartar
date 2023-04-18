@@ -11,16 +11,6 @@
           <h1 class="m-0">Profile</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
-      {{-- @if (session()->has('success'))
-          <script>
-              toastr.success('{{ session('success') }}');
-          </script>
-      @endif
-      @if (session()->has('error'))
-          <script>
-              toastr.error('{{ session('error') }}');
-          </script>
-      @endif --}}
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content-header -->

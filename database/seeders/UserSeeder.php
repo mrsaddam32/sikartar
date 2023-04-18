@@ -16,12 +16,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
+        $faker = Faker::create(env('FAKER_LOCALE', 'en_US'));
 
         for ($i = 0; $i < 15; $i++) {
             User::create([
                 'name' => $faker->name,
-                'email' => $faker->email(),
+                'email' => $faker->email,
                 'password' => bcrypt('Inipasswordaman123'),
                 'role_id' => 2,
             ]);
