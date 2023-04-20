@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.main')
+@extends('templates.layouts.main')
 
 @section('container')
   <!-- Content Wrapper. Contains page content -->
@@ -115,13 +115,15 @@
   </div>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     $(function () {
         let table = $('#yajra-datatables').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
-            ajax: "{{ route('users.index') }}",
+            ajax: "{{ route('admin.users.index') }}",
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
@@ -152,7 +154,7 @@
             e.preventDefault();
             let id = $(this).data('id');
             $.ajax({
-                url: "{{ route('users.index') }}" + '/detail/' + id,
+                url: "{{ route('admin.users.index') }}" + '/detail/' + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function (data) {
@@ -197,7 +199,7 @@
             let form = $(this);
             let id = $('#id').val();
             $.ajax({
-                url: "{{ route('users.update', ':id') }}".replace(':id', id),
+                url: "{{ route('admin.users.update', ':id') }}".replace(':id', id),
                 type: "POST",
                 data: form.serialize(),
                 dataType: "JSON",
@@ -219,5 +221,9 @@
             });
         });
     });
+
+    @if(Session::has('success'))
+      toastr.success("{{ Session::get('success') }}");
+    @endif
 </script>
 @endsection

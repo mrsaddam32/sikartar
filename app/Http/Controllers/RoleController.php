@@ -37,9 +37,9 @@ class RoleController extends Controller
                 ->make(true);
         }
 
-        return view('dashboard.roles.index', [
+        return view('admin.roles.index', [
             'title' => 'Roles Management',
-            'active' => 'roles',
+            'active' => 'admin/roles',
         ], compact('roles'));
     }
 

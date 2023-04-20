@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.main')
+@extends('templates.layouts.main')
 
 @section('container')  
   <!-- Content Wrapper. Contains page content -->

@@ -38,7 +38,7 @@ class UserController extends Controller
                     data-id="' . $user->id . '">
                     <i class="fas fa-eye"></i>
                     </button>
-                    <form action="' . route('users.destroy', $user->id) . '" method="POST" class="mx-1 d-inline">
+                    <form action="' . route('admin.users.destroy', $user->id) . '" method="POST" class="mx-1 d-inline">
                     ' . csrf_field() . '
                     ' . method_field('DELETE') . '
                     <input type="hidden" name="id" value="' . $user->id . '">
@@ -50,9 +50,9 @@ class UserController extends Controller
                 ->make(true);
         }
 
-        return view('dashboard.users.index', [
+        return view('admin.users.index', [
             'title' => 'Users Management',
-            'active' => 'users',
+            'active' => 'admin/users',
         ], compact('users'));
     }
 
@@ -138,6 +138,6 @@ class UserController extends Controller
         $user = User::findOrfail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
     }
 }

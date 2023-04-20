@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.main')
+@extends('templates.layouts.main')
 
 @section('container')
   <!-- Content Wrapper. Contains page content -->
@@ -53,7 +53,7 @@
             searching: false,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('roles.index') }}",
+            ajax: "{{ route('admin.roles.index') }}",
             columns: [
                 {data: 'role_name', name: 'role_name'},
                 {data: 'role_description', name: 'role_description'},

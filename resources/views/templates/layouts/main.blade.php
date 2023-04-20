@@ -26,18 +26,20 @@
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
 
-  @include('dashboard.partials.navbar')
+  @include('templates.partials.navbar')
 
-  @include('dashboard.partials.sidenav')
+  @include('templates.partials.sidenav')
   
   @yield('container')
 
-  @include('dashboard.partials.footer')
+  @include('templates.partials.footer')
   
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+<!-- Ownself JS -->
+<script src="{{ asset('dist/js/self.js') }}"></script>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->

@@ -15,7 +15,7 @@
         <img src="{{ Auth::user()->photo_path ? asset(Auth::user()->photo_path) : asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="{{ route('dashboard.profile') }}" class="d-block">
+        <a href="{{ route('admin.profile') }}" class="d-block">
           {{ Auth::user()->name }}
         </a>
       </div>
@@ -27,7 +27,7 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+          <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -44,13 +44,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item ml-3">
-              <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
+              <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}">
                 <i class="fas fa-users mr-2"></i>
                 <p>User Management</p>
               </a>
             </li>
             <li class="nav-item ml-3">
-              <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles') ? 'active' : '' }}">
+              <a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->is('admin/roles') ? 'active' : '' }}">
                 <i class="fas fa-users mr-2"></i>
                 <p>Roles Management</p>
               </a>
@@ -59,7 +59,7 @@
         </li>
         <li class="nav-header">PROFILE SECTION</li>
         <li class="nav-item">
-          <a href="{{ route('dashboard.profile') }}" class="nav-link {{ request()->is('dashboard/profile') ? 'active' : '' }}">
+          <a href="{{ route('admin.profile') }}" class="nav-link {{ request()->is('admin/profile') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>
               Profile
@@ -80,7 +80,7 @@
         <img src="{{ Auth::user()->photo_path ? asset(Auth::user()->photo_path) : asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="{{ route('dashboard.profile') }}" class="d-block">
+        <a href="{{ route('user.profile') }}" class="d-block">
           {{ Auth::user()->name }}
         </a>
       </div>
@@ -92,7 +92,7 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+          <a href="{{ route('user.dashboard') }}" class="nav-link {{ request()->is('user/dashboard') ? 'active' : '' }}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -101,7 +101,7 @@
         </li>
         <li class="nav-header">PROFILE SECTION</li>
         <li class="nav-item">
-          <a href="{{ route('dashboard.profile') }}" class="nav-link {{ request()->is('dashboard/profile') ? 'active' : '' }}">
+          <a href="{{ route('user.profile') }}" class="nav-link {{ request()->is('user/profile') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>
               Profile

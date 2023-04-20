@@ -24,14 +24,14 @@ class DashboardController extends Controller
         $users = User::all()->count();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return view('dashboard.admin.index', [
+            return view('admin.dashboard.index', [
                 'title' => 'Dashboard Admin',
                 'active' => 'dashboard',
                 'users' => $users,
                 'user' => $user,
             ]);
         } else {
-            return view('dashboard.user.index', [
+            return view('user.dashboard.index', [
                 'title' => 'Dashboard User',
                 'active' => 'dashboard',
                 'user' => $user,
@@ -48,11 +48,19 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('dashboard.profile.index', [
-            'title' => 'Profile Page',
-            'active' => 'profile',
-            'user' => $user,
-        ]);
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return view('admin.profile.index', [
+                'title' => 'My Profile',
+                'active' => 'profile',
+                'user' => $user,
+            ]);
+        } else {
+            return view('user.profile.index', [
+                'title' => 'My Profile',
+                'active' => 'profile',
+                'user' => $user,
+            ]);
+        }
     }
 
     /**
@@ -116,7 +124,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('dashboard.profile')
+            return redirect()->route('admin.profile')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -140,7 +148,7 @@ class DashboardController extends Controller
 
         $user->save();
 
-        return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully');
+        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully');
     }
 
     /**
@@ -159,7 +167,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('dashboard.profile')
+            return redirect()->route('admin.profile')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -168,9 +176,9 @@ class DashboardController extends Controller
             $user->password = Hash::make($request->new_password);
             $user->save();
 
-            return redirect()->route('dashboard.profile')->with('success', 'Password updated successfully');
+            return redirect()->route('admin.profile')->with('success', 'Password updated successfully');
         } else {
-            return redirect()->route('dashboard.profile')->with('error', 'Current password is incorrect');
+            return redirect()->route('admin.profile')->with('error', 'Current password is incorrect');
         }
     }
 
