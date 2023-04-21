@@ -148,7 +148,11 @@ class DashboardController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully');
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return redirect()->route('admin.profile')->with('success', 'Profile updated successfully');
+        } else {
+            return redirect()->route('user.profile')->with('success', 'Profile updated successfully');
+        }
     }
 
     /**
@@ -172,13 +176,24 @@ class DashboardController extends Controller
                 ->withInput();
         }
 
-        if (Hash::check($request->current_password, $user->password)) {
-            $user->password = Hash::make($request->new_password);
-            $user->save();
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            if (Hash::check($request->current_password, $user->password)) {
+                $user->password = Hash::make($request->new_password);
+                $user->save();
 
-            return redirect()->route('admin.profile')->with('success', 'Password updated successfully');
+                return redirect()->route('admin.profile')->with('success', 'Password updated successfully');
+            } else {
+                return redirect()->route('admin.profile')->with('error', 'Current password is incorrect');
+            }
         } else {
-            return redirect()->route('admin.profile')->with('error', 'Current password is incorrect');
+            if (Hash::check($request->current_password, $user->password)) {
+                $user->password = Hash::make($request->new_password);
+                $user->save();
+
+                return redirect()->route('user.profile')->with('success', 'Password updated successfully');
+            } else {
+                return redirect()->route('user.profile')->with('error', 'Current password is incorrect');
+            }
         }
     }
 
