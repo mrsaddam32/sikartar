@@ -16,6 +16,10 @@
         <div class="alert alert-danger" role="alert">
           {{ session('error') }}
         </div>
+      @elseif ($errors->has('error'))
+        <div class="alert alert-danger" role="alert">
+          {{ $errors->first('error') }}
+        </div>
       @endif
       <form action="{{ route('auth.authenticate') }}" method="post">
         @csrf

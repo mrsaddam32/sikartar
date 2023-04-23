@@ -22,7 +22,7 @@ class isLoggedIn
         }
 
         return redirect()->route('auth.login')->withErrors([
-            'email' => 'You must be logged in to access this page.',
+            'error' => 'You must be logged in to access this page.',
         ]);
     }
 }

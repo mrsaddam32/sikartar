@@ -30,27 +30,47 @@ class AuthController extends Controller
      */
     public function authenticate(Request $request)
     {
-        try {
-            $credentials = $request->validate([
-                'email' => ['required', 'email:dns'],
-                'password' => ['required'],
-            ]);
+        $maxAttempts = 5;
+        $decaySeconds = 60;
 
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
+        if (RateLimiter::tooManyAttempts($request->ip(), $maxAttempts, $decaySeconds)) {
+            $seconds = RateLimiter::availableIn($request->ip());
 
-                if (Auth::user()->role_id == 1) {
-                    return redirect()->intended('admin/dashboard');
-                } else {
-                    return redirect()->intended('user/dashboard');
-                }
+            return back()->with('error', 'Too many login attempts. Please try again in ' . $seconds . ' seconds.');
+        }
+
+        $credentials = $request->validate([
+            'email' => ['required', 'email:dns'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            RateLimiter::clear($request->ip());
+
+            // Check if the user attempted to log in more than maxAttempts times
+            if (RateLimiter::attempts($request->ip(), $maxAttempts) >= $maxAttempts) {
+                // The user exceeded maxAttempts, so they must wait for decaySeconds before logging in again
+                RateLimiter::hit($request->ip(), $decaySeconds);
+                $seconds = RateLimiter::availableIn($request->ip());
+                return back()->with('error', 'You have exceeded the maximum number of login attempts. Please try again in ' . $seconds . ' seconds.');
             }
 
-            return back()->with('error', 'Your provided credentials do not match our records.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->errors())->withInput();
-        } catch (\Exception $e) {
-            return back()->with('error', 'An error occurred while authenticating. Please try again later.');
+            $request->session()->regenerate();
+
+            if (Auth::user()->role_id == 1) {
+                return redirect()->intended('admin/dashboard');
+            } else {
+                return redirect()->intended('user/dashboard');
+            }
+        } else {
+            RateLimiter::hit($request->ip(), $decaySeconds);
+            $attemptsLeft = $maxAttempts - RateLimiter::attempts($request->ip(), $decaySeconds);
+
+            if ($attemptsLeft > 0) {
+                return back()->with('error', 'Your provided credentials do not match our records. You have ' . $attemptsLeft . ' attempts left.');
+            } else {
+                return back()->with('error', 'Your provided credentials do not match our records. Please try again in ' . $decaySeconds . ' seconds.');
+            }
         }
     }
 
