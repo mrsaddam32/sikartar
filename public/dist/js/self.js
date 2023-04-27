@@ -12,3 +12,10 @@ valueDisplays.forEach((value) => {
         startValue == endValue && clearInterval(counter);
     }, duration);
 });
+
+const image = document.getElementById("img");
+const inputtedImage = document.getElementById("image");
+
+inputtedImage.addEventListener("change", () => {
+    image.src = URL.createObjectURL(inputtedImage.files[0]);
+});

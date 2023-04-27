@@ -25,18 +25,16 @@
             <div class="card-body box-profile">
               <div class="text-center">
                 @if($user->photo_path)
-                <img class="profile-user-img img-fluid img-circle border-primary"
+                  <img class="profile-user-img img-fluid img-circle border-primary"
                     src="{{ asset($user->photo_path) }}"
-                    alt="{{ $user->name }}">
+                    alt="{{ $user->name }}" height="100" width="100" style="background-position: center; object-fit: cover;">
                 @else
-                <img class="profile-user-img img-fluid img-circle"
-                    src="{{ asset('dist/img/user4-128x128.jpg') }}"
+                  <img class="profile-user-img img-fluid img-circle"
+                    src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random"
                     alt="{{ $user->name }}">
                 @endif
               </div>
-
               <h3 class="profile-username text-center">{{ $user->name }}</h3>
-
               @if($user->role_id == 1)
                 <p class="text-muted text-center text-uppercase">{{ $user->role->role_name }}</p>
               @else
@@ -122,7 +120,10 @@
                       <div class="col-md-12">
                         <div class="mb-3">
                           <label for="image" class="form-label">Image</label>
-                          <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" value="{{ old('image', $user->image) }}">
+                          <div style="display:flex;">
+                            <img class="img-thumbnail img-fluid float-left" src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" id="img" style="margin-right:10px;" width="200" height="200">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror border-0 m-auto" id="image" name="image" value="{{ old('image', $user->image) }}">
+                          </div>
                           @error('image')
                             <div class="invalid-feedback">
                               {{ $message }}

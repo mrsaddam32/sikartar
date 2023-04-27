@@ -11,7 +11,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex overflow-hidden">
       <div class="image">
-        <img src="{{ Auth::user()->photo_path ? asset(Auth::user()->photo_path) : asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+        @php
+          $userPhoto = Auth::user()->photo_path ? asset(Auth::user()->photo_path) : "https://ui-avatars.com/api/?name=" . Auth::user()->name . "&background=random"
+        @endphp
+        <img src="{{ $userPhoto }}" class="img-circle" alt="User Image">
       </div>
       <div class="info">
         <a href="{{ route('admin.profile') }}" class="d-block">
