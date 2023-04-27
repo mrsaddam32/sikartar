@@ -67,7 +67,7 @@ class AuthController extends Controller
             $attemptsLeft = $maxAttempts - RateLimiter::attempts($request->ip(), $decaySeconds);
 
             if ($attemptsLeft > 0) {
-                return back()->with('error', 'Your provided credentials do not match our records. You have ' . $attemptsLeft . ' attempts left.');
+                return back()->with('warning', 'Your provided credentials do not match our records. You have ' . $attemptsLeft . ' attempts left.');
             } else {
                 return back()->with('error', 'Your provided credentials do not match our records. Please try again in ' . $decaySeconds . ' seconds.');
             }

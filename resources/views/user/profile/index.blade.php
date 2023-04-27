@@ -60,7 +60,7 @@
           <div class="card">
             <div class="card-header p-2">
               <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Update Profile</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#update_profile" data-toggle="tab">Update Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="#change_password" data-toggle="tab">Change Password</a></li>
               </ul>
             </div><!-- /.card-header -->
@@ -114,7 +114,7 @@
                 </div>
                 <!-- /.tab-pane -->
 
-                <div class="tab-pane active" id="settings">
+                <div class="tab-pane active" id="update_profile">
                   <form action="{{ route('user.profile.update', $user->id) }}" method="POST"enctype="multipart/form-data">
                     @method('patch')
                     @csrf

@@ -8,19 +8,28 @@
       <h2><b>{{ config('app.name') }}</b></h2>
     </div>
     <div class="card-body">
-      @if (session()->has('success'))
-        <div class="alert alert-success" role="alert">
-          {{ session('success') }}
-        </div>
-      @elseif (session()->has('error'))
-        <div class="alert alert-danger" role="alert">
-          {{ session('error') }}
-        </div>
-      @elseif ($errors->has('error'))
-        <div class="alert alert-danger" role="alert">
-          {{ $errors->first('error') }}
-        </div>
-      @endif
+      @switch(true)
+        @case(session()->has('success'))
+          <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+          </div>
+          @break
+        @case(session()->has('error'))
+          <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+          </div>
+          @break
+        @case(session()->has('warning'))
+          <div class="alert alert-warning" role="alert">
+            {{ session('warning') }}
+          </div>
+          @break
+        @case($errors->has('error'))
+          <div class="alert alert-danger" role="alert">
+            {{ $errors->first('error') }}
+          </div>
+          @break
+      @endswitch
       <form action="{{ route('auth.authenticate') }}" method="post">
         @csrf
         <div class="input-group mb-3">
