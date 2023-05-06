@@ -60,6 +60,14 @@
             </li>
           </ul>
         </li>
+        <li class="nav-item">
+          <a href="{{ route('admin.activity.index') }}" class="nav-link {{ Route::is('admin.activity.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-solid fa-file-contract"></i>
+            <p>
+              Activity (Kegiatan)
+            </p>
+          </a>
+        </li>
         <li class="nav-header">PROFILE SECTION</li>
         <li class="nav-item">
           <a href="{{ route('admin.profile') }}" class="nav-link {{ request()->is('admin/profile') ? 'active' : '' }}">
@@ -75,6 +83,14 @@
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('user.activity.index') }}" class="nav-link {{ Route::is('user.activity.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-solid fa-file-contract"></i>
+            <p>
+              Activity (Kegiatan)
             </p>
           </a>
         </li>

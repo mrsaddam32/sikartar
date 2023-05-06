@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,11 @@ Route::middleware(['isLogged'])->group(function () {
             Route::patch('/update/{id}', [RoleController::class, 'update'])->name('update');
             Route::delete('/delete/{id}', [RoleController::class, 'destroy'])->name('destroy');
         });
+
+        Route::prefix('activity')->name('activity.')->group(function () {
+            Route::get('/', [ActivityController::class, 'index'])->name('index');
+            Route::get('/detail', [ActivityController::class, 'show'])->name('show');
+        });
     });
 
     Route::prefix('user')->name('user.')->group(function () {
@@ -61,5 +67,10 @@ Route::middleware(['isLogged'])->group(function () {
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('profile.update');
         Route::patch('/profile/password/{id}', [DashboardController::class, 'updatePassword'])->name('profile.updatePassword');
+
+        Route::prefix('activity')->name('activity.')->group(function () {
+            Route::get('/', [ActivityController::class, 'index'])->name('index');
+            Route::get('/detail', [ActivityController::class, 'show'])->name('show');
+        });
     });
 });
