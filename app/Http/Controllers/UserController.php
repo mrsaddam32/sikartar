@@ -122,6 +122,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role_id = $request->role;
         $user->save();
 
         return response()->json(['success' => true, 'message' => 'User updated successfully']);
