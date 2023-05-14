@@ -11,6 +11,13 @@
             <h1 class="m-0">{{ $title }}</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a href="{{ route('admin.activity.create') }}" class="btn btn-info">
+                    <i class="fas fa-solid fa-plus mr-1"></i>Add New Activity
+                </a>
+            </div>
+        </div>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -25,9 +32,6 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -36,41 +40,64 @@
                             <tr>
                                 <th style="width: 1%">#</th>
                                 <th style="width: 20%">Project Name</th>
-                                <th style="width: 30%">Team Members</th>
-                                <th>Project Progress</th>
+                                <th style="width: 30%">Responsible Member</th>
+                                <th>Location</th>
                                 <th style="width: 8%" class="text-center">Status</th>
                                 <th style="width: 20%"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            @foreach ( $activities as $activity )
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td><a>{{ $activity->activity_name }}</a>
+                                        <br />
+                                        <small>Created at {{ $activity->created_at->diffForHumans() }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">{{ $activity->responsible_person }}</span>
+                                    </td>
+                                    <td class="project_progress">
+                                        {{ $activity->activity_location }}
+                                    </td>
+                                    <td class="project-state">
+                                        @if ( $activity->activity_status == 'PENDING' )
+                                            <span class="badge badge-warning">{{ $activity->activity_status }}</span>
+                                        @elseif ($activity->activity_status == 'APPROVED')
+                                            <span class="badge badge-info">{{ $activity->activity_status }}</span>
+                                        @elseif ($activity->activity_status == 'COMPLETED')
+                                            <span class="badge badge-success">{{ $activity->activity_status }}</span>
+                                        @elseif ($activity->activity_status == 'REJECTED')
+                                            <span class="badge badge-danger">{{ $activity->activity_status }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.activity.show', ['activities_id' => $activity->activity_id]) }}">
+                                            <i class="fas fa-folder"></i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-info btn-sm" href="#">
+                                            <i class="fas fa-pencil-alt"></i>
+                                            Edit
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="#">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            {{-- <tr>
                                 <td>1</td>
                                 <td><a>Lorem Ipsum Dolor</a>
                                     <br />
                                     <small>Created 04.04.2023</small>
                                 </td>
                                 <td>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                                        </li>
-                                    </ul>
+                                    <span class="text-primary fw-bold">KNTL</span>
                                 </td>
                                 <td class="project_progress">
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                        </div>
-                                    </div>
-                                    <small>57% Complete</small>
+                                    Jalan Kramat Raya No. 98
                                 </td>
                                 <td class="project-state">
                                     <span class="badge badge-success">Success</span>
@@ -89,7 +116,7 @@
                                         Delete
                                     </a>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -97,6 +124,26 @@
         </section>
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+<!-- /.content-wrapper -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+      // Set toastr options
+      toastr.options = {
+          "positionClass": "toast-top-right",
+      }
+
+      // Show success message
+      @if (session()->has('success'))
+          toastr.success('{{ session('success') }}');
+      @endif
+
+      // Show error message
+      @if (session()->has('error'))
+          toastr.error('{{ session('error') }}');
+      @endif
+  });
+</script>
 @endsection

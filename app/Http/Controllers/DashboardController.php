@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Activity;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -22,6 +23,8 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $users = User::all()->count();
+        $activities = Activity::all()->count();
+        $totalIncome = Activity::all()->sum('activity_budget');
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.dashboard.index', [
@@ -29,6 +32,8 @@ class DashboardController extends Controller
                 'active' => 'dashboard',
                 'users' => $users,
                 'user' => $user,
+                'activities' => $activities,
+                'totalIncome' => $totalIncome,
             ]);
         } else {
             return view('user.dashboard.index', [

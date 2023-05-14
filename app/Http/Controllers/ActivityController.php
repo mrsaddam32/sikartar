@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,13 @@ class ActivityController extends Controller
      */
     public function index()
     {
+        $activities = Activity::all();
+
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.activities.index', [
                 'title' => 'Activities Management',
                 'active' => 'admin/activities',
-            ]);
+            ], compact('activities'));
         } else {
             return view('user.activities.index', [
                 'title' => 'Activities Management',
@@ -35,7 +38,20 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
+
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return view('admin.activities.create', [
+                'title' => 'Add New Activity',
+                'active' => 'admin/activities',
+
+            ], compact('users'));
+        } else {
+            return view('user.activities.create', [
+                'title' => 'Add New Activity',
+                'active' => 'user/activities',
+            ]);
+        }
     }
 
     /**
@@ -46,7 +62,19 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Activity::create([
+            'activity_id' => $request->activity_id,
+            'activity_name' => $request->activity_name,
+            'responsible_person' => $request->responsible_person,
+            'activity_description' => $request->activity_description,
+            'activity_budget' => $request->activity_budget,
+            'activity_status' => 'PENDING',
+            'activity_location' => $request->activity_location,
+            'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date) + 86400),
+            'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
+        ]);
+
+        return redirect()->route('admin.activity.index')->with('success', 'Activity has been added successfully!');
     }
 
     /**
@@ -55,8 +83,10 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function show(Activity $activity)
+    public function show(Request $request, Activity $activity)
     {
+        $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
+
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.activities.show', [
                 'title' => 'Activity Detail',

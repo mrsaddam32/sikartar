@@ -14,7 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('activity_id', 8)->unique();
+            $table->string('activity_name');
+            $table->string('responsible_person');
+            $table->string('activity_description');
+            $table->integer('activity_budget');
+            $table->enum('activity_status', ['PENDING', 'REJECTED', 'APPROVED', 'COMPLETED']);
+            $table->string('activity_location');
+            $table->date('activity_start_date');
+            $table->date('activity_end_date');
+            $table->string('document_name')->nullable();
             $table->timestamps();
         });
     }

@@ -60,11 +60,20 @@
             </li>
           </ul>
         </li>
+        <li class="nav-header">ACTIVITY SECTION</li>
         <li class="nav-item">
           <a href="{{ route('admin.activity.index') }}" class="nav-link {{ Route::is('admin.activity.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-solid fa-file-contract"></i>
+            <i class="nav-icon fas fa-solid fa-list"></i>
             <p>
               Activity (Kegiatan)
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-solid fa-image"></i>
+            <p>
+              Images Documentation
             </p>
           </a>
         </li>
