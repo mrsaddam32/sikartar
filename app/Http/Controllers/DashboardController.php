@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $users = User::all()->count();
+
+        $activity = Activity::whereDate('activity_start_date', '>=', Carbon::now())->orderBy('activity_start_date', 'ASC')->first();
+        $startDate = Carbon::parse($activity->activity_start_date);
+        $now = Carbon::now();
+        $remainingDays = $startDate->diffInDays($now);
+
         $activities = Activity::all()->count();
         $totalIncome = Activity::all()->sum('activity_budget');
 
@@ -32,6 +39,8 @@ class DashboardController extends Controller
                 'active' => 'dashboard',
                 'users' => $users,
                 'user' => $user,
+                'activity' => $activity,
+                'remainingDays' => $remainingDays,
                 'activities' => $activities,
                 'totalIncome' => $totalIncome,
             ]);

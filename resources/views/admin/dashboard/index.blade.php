@@ -34,20 +34,6 @@
               <!-- /.info-box -->
             </div>
             <!-- /.col -->
-            <!-- fix for small devices only -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="col-12 col-sm-6 col-md-3">
-              <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-                <div class="info-box-content">
-                  <span class="info-box-text">Sales</span>
-                  <span class="info-box-number num" data-val="738">000</span>
-                </div>
-                <!-- /.info-box-content -->
-              </div>
-              <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
             <div class="col-12 col-sm-6 col-md-3">
               <div class="info-box mb-3">
                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
@@ -73,6 +59,17 @@
               <!-- /.info-box -->
             </div>
             <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>In {{ $remainingDays }} Days</h3>
+                  <p>{{ $activity->activity_name }}</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-list"></i>
+                </div>
+              </div>
+            </div>
           </div>
         <!-- /.row -->
       </div><!--/. container-fluid -->

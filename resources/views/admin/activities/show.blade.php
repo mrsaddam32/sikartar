@@ -74,7 +74,7 @@
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ $activity->activity_name }}</h3>
                             <p class="text-muted">{{ $activity->activity_description }}</p>
-                            <br>
+                            <p class="text-muted">Project Date : {{ $activity->activity_start_date }} - {{ $activity->activity_end_date }}</p>
                             <div class="text-muted">
                                 <p class="text-sm">Project Location
                                 <b class="d-block">{{ $activity->activity_location }}</b>

@@ -76,47 +76,19 @@
                                             <i class="fas fa-folder"></i>
                                             View
                                         </a>
-                                        <a class="btn btn-info btn-sm" href="#">
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.activity.edit', ['activities_id' => $activity->activity_id]) }}">
                                             <i class="fas fa-pencil-alt"></i>
                                             Edit
                                         </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
+                                        <form action="{{ route('admin.activity.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="mx-1 d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
+                                            <button type="submit" name="name" class="btn btn-md btn-danger btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
-                            {{-- <tr>
-                                <td>1</td>
-                                <td><a>Lorem Ipsum Dolor</a>
-                                    <br />
-                                    <small>Created 04.04.2023</small>
-                                </td>
-                                <td>
-                                    <span class="text-primary fw-bold">KNTL</span>
-                                </td>
-                                <td class="project_progress">
-                                    Jalan Kramat Raya No. 98
-                                </td>
-                                <td class="project-state">
-                                    <span class="badge badge-success">Success</span>
-                                </td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.activity.show') }}">
-                                        <i class="fas fa-folder"></i>
-                                        View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="#">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        Edit
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="#">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -129,21 +101,21 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-  $(document).ready(function() {
-      // Set toastr options
-      toastr.options = {
-          "positionClass": "toast-top-right",
-      }
-
-      // Show success message
-      @if (session()->has('success'))
-          toastr.success('{{ session('success') }}');
-      @endif
-
-      // Show error message
-      @if (session()->has('error'))
-          toastr.error('{{ session('error') }}');
-      @endif
-  });
-</script>
+    $(document).ready(function() {
+        // Set toastr options
+        toastr.options = {
+            "positionClass": "toast-top-right",
+        }
+  
+        // Show success message
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+  
+        // Show error message
+        @if (session()->has('error'))
+            toastr.error('{{ session('error') }}');
+        @endif
+    });
+  </script>
 @endsection

@@ -68,7 +68,7 @@ class ActivityController extends Controller
             'responsible_person' => $request->responsible_person,
             'activity_description' => $request->activity_description,
             'activity_budget' => $request->activity_budget,
-            'activity_status' => 'PENDING',
+            'activity_status' => $request->activity_status,
             'activity_location' => $request->activity_location,
             'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date) + 86400),
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
@@ -106,9 +106,22 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function edit(Activity $activity)
+    public function edit(Request $request, Activity $activity)
     {
-        //
+        $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
+        $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
+
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return view('admin.activities.edit', [
+                'title' => 'Edit Activity',
+                'active' => 'admin/activities',
+            ], compact('activity', 'users'));
+        } else {
+            return view('user.activities.edit', [
+                'title' => 'Edit Activity',
+                'active' => 'user/activities',
+            ], compact('activity', 'users'));
+        }
     }
 
     /**
@@ -118,9 +131,21 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Activity $activity)
+    public function update(Request $request, $activities_id)
     {
-        //
+        $activity = Activity::where('activity_id', $activities_id)->first();
+        $activity->update([
+            'activity_name' => $request->activity_name,
+            'responsible_person' => $request->responsible_person,
+            'activity_description' => $request->activity_description,
+            'activity_budget' => $request->activity_budget,
+            'activity_status' => $request->activity_status,
+            'activity_location' => $request->activity_location,
+            'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date) + 86400),
+            'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
+        ]);
+
+        return redirect()->route('admin.activity.index')->with('success', 'Activity has been updated successfully!');
     }
 
     /**
@@ -129,8 +154,11 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Activity $activity)
+    public function destroy($activity_id)
     {
-        //
+        $activity = Activity::where('activity_id', $activity_id)->first();
+        $activity->delete();
+
+        return redirect()->route('admin.activity.index')->with('success', 'Activity has been deleted successfully!');
     }
 }
