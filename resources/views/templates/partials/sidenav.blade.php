@@ -60,12 +60,12 @@
             </li>
           </ul>
         </li>
-        <li class="nav-header">ACTIVITY SECTION</li>
+        <li class="nav-header">EVENTS SECTION</li>
         <li class="nav-item">
-          <a href="{{ route('admin.activity.index') }}" class="nav-link {{ Route::is('admin.activity.*') ? 'active' : '' }}">
+          <a href="{{ route('admin.event.index') }}" class="nav-link {{ Route::is('admin.event.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-solid fa-list"></i>
             <p>
-              Activity (Kegiatan)
+              Events
             </p>
           </a>
         </li>
@@ -96,10 +96,10 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('user.activity.index') }}" class="nav-link {{ Route::is('user.activity.*') ? 'active' : '' }}">
+          <a href="{{ route('user.event.index') }}" class="nav-link {{ Route::is('user.event.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-solid fa-file-contract"></i>
             <p>
-              Activity (Kegiatan)
+              Events
             </p>
           </a>
         </li>

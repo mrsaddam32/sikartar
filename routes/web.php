@@ -56,7 +56,7 @@ Route::middleware(['isLogged'])->group(function () {
             Route::delete('/delete/{id}', [RoleController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('activity')->name('activity.')->group(function () {
+        Route::prefix('event')->name('event.')->group(function () {
             Route::get('/', [ActivityController::class, 'index'])->name('index');
             Route::get('/create', [ActivityController::class, 'create'])->name('create');
             Route::post('/store', [ActivityController::class, 'store'])->name('store');
@@ -73,7 +73,7 @@ Route::middleware(['isLogged'])->group(function () {
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('profile.update');
         Route::patch('/profile/password/{id}', [DashboardController::class, 'updatePassword'])->name('profile.updatePassword');
 
-        Route::prefix('activity')->name('activity.')->group(function () {
+        Route::prefix('event')->name('event.')->group(function () {
             Route::get('/', [ActivityController::class, 'index'])->name('index');
             Route::get('/detail', [ActivityController::class, 'show'])->name('show');
         });

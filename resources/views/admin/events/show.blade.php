@@ -19,7 +19,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Projects Detail</h3>
+                <h3 class="card-title">Events Detail</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -36,7 +36,7 @@
                             <div class="col-12 col-sm-4">
                                 <div class="info-box bg-light">
                                     <div class="info-box-content">
-                                        <span class="info-box-text text-center text-muted">Estimated project duration</span>
+                                        <span class="info-box-text text-center text-muted">Estimated Event duration</span>
                                         <span class="info-box-number text-center text-muted mb-0">
                                             @php
                                                 $start = new DateTime($activity->activity_start_date);
@@ -74,15 +74,17 @@
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ $activity->activity_name }}</h3>
                             <p class="text-muted">{{ $activity->activity_description }}</p>
-                            <p class="text-muted">Project Date : {{ $activity->activity_start_date }} - {{ $activity->activity_end_date }}</p>
                             <div class="text-muted">
-                                <p class="text-sm">Project Location
+                                <p class="text-sm">Event Date
+                                <b class="d-block">{{ $activity->activity_start_date }} - {{ $activity->activity_end_date }}</b>
+                                </p>
+                                <p class="text-sm">Event Location
                                 <b class="d-block">{{ $activity->activity_location }}</b>
                                 </p>
-                                <p class="text-sm">Project Leader
+                                <p class="text-sm">Event Leader
                                 <b class="d-block">{{ $activity->responsible_person }}</b>
                                 </p>
-                                <p class="text-sm">Project Status
+                                <p class="text-sm">Event Status
                                 @if ( $activity->activity_status == 'PENDING' )
                                     <span class="badge d-block w-25 badge-warning">{{ $activity->activity_status }}</span>
                                 @elseif ($activity->activity_status == 'APPROVED')
@@ -94,7 +96,7 @@
                                 @endif
                                 </p>
                             </div>
-                            <h5 class="mt-5 text-muted">Project files</h5>
+                            <h5 class="mt-5 text-muted">Event files</h5>
                             <ul class="list-unstyled">
                                 <li>
                                     <a href="" class="btn-link text-white"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
@@ -114,7 +116,7 @@
                             </ul>
                             <div class="text-center mt-5 mb-3">
                                 <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                                <a href="{{ route('admin.activity.index') }}" class="btn btn-sm btn-info text-white">Back to list Activity</a>
+                                <a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-info text-white">Back to All Events</a>
                             </div>
                         </div>
                     </div>

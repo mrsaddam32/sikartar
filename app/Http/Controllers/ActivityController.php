@@ -19,13 +19,13 @@ class ActivityController extends Controller
         $activities = Activity::all();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return view('admin.activities.index', [
-                'title' => 'Activities Management',
+            return view('admin.events.index', [
+                'title' => 'Events Management',
                 'active' => 'admin/activities',
             ], compact('activities'));
         } else {
-            return view('user.activities.index', [
-                'title' => 'Activities Management',
+            return view('user.events.index', [
+                'title' => 'Events Management',
                 'active' => 'user/activities',
             ]);
         }
@@ -41,14 +41,14 @@ class ActivityController extends Controller
         $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return view('admin.activities.create', [
-                'title' => 'Add New Activity',
+            return view('admin.events.create', [
+                'title' => 'Add New Event',
                 'active' => 'admin/activities',
 
             ], compact('users'));
         } else {
-            return view('user.activities.create', [
-                'title' => 'Add New Activity',
+            return view('user.events.create', [
+                'title' => 'Add New Event',
                 'active' => 'user/activities',
             ]);
         }
@@ -74,7 +74,7 @@ class ActivityController extends Controller
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
         ]);
 
-        return redirect()->route('admin.activity.index')->with('success', 'Activity has been added successfully!');
+        return redirect()->route('admin.event.index')->with('success', 'Activity has been added successfully!');
     }
 
     /**
@@ -88,13 +88,13 @@ class ActivityController extends Controller
         $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return view('admin.activities.show', [
-                'title' => 'Activity Detail',
+            return view('admin.events.show', [
+                'title' => 'Event Detail',
                 'active' => 'admin/activities',
             ], compact('activity'));
         } else {
-            return view('user.activities.show', [
-                'title' => 'Activity Detail',
+            return view('user.events.show', [
+                'title' => 'Event Detail',
                 'active' => 'user/activities',
             ], compact('activity'));
         }
@@ -112,13 +112,13 @@ class ActivityController extends Controller
         $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return view('admin.activities.edit', [
-                'title' => 'Edit Activity',
+            return view('admin.events.edit', [
+                'title' => 'Edit Event',
                 'active' => 'admin/activities',
             ], compact('activity', 'users'));
         } else {
-            return view('user.activities.edit', [
-                'title' => 'Edit Activity',
+            return view('user.events.edit', [
+                'title' => 'Edit Event',
                 'active' => 'user/activities',
             ], compact('activity', 'users'));
         }
@@ -145,7 +145,7 @@ class ActivityController extends Controller
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
         ]);
 
-        return redirect()->route('admin.activity.index')->with('success', 'Activity has been updated successfully!');
+        return redirect()->route('admin.event.index')->with('success', 'Activity has been updated successfully!');
     }
 
     /**
@@ -159,6 +159,6 @@ class ActivityController extends Controller
         $activity = Activity::where('activity_id', $activity_id)->first();
         $activity->delete();
 
-        return redirect()->route('admin.activity.index')->with('success', 'Activity has been deleted successfully!');
+        return redirect()->route('admin.event.index')->with('success', 'Activity has been deleted successfully!');
     }
 }

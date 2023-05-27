@@ -13,8 +13,8 @@
         </div><!-- /.row -->
         <div class="row mb-2">
             <div class="col-sm-6">
-                <a href="{{ route('admin.activity.create') }}" class="btn btn-info">
-                    <i class="fas fa-solid fa-plus mr-1"></i>Add New Activity
+                <a href="{{ route('admin.event.create') }}" class="btn btn-info">
+                    <i class="fas fa-solid fa-plus mr-1"></i>Add New Event
                 </a>
             </div>
         </div>
@@ -39,7 +39,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 1%">#</th>
-                                <th style="width: 20%">Project Name</th>
+                                <th style="width: 20%">Event Name</th>
                                 <th style="width: 30%">Responsible Member</th>
                                 <th>Location</th>
                                 <th style="width: 8%" class="text-center">Status</th>
@@ -72,19 +72,19 @@
                                         @endif
                                     </td>
                                     <td class="project-actions text-right">
-                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.activity.show', ['activities_id' => $activity->activity_id]) }}">
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.event.show', ['activities_id' => $activity->activity_id]) }}">
                                             <i class="fas fa-folder"></i>
                                             View
                                         </a>
-                                        <a class="btn btn-info btn-sm" href="{{ route('admin.activity.edit', ['activities_id' => $activity->activity_id]) }}">
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.event.edit', ['activities_id' => $activity->activity_id]) }}">
                                             <i class="fas fa-pencil-alt"></i>
                                             Edit
                                         </a>
-                                        <form action="{{ route('admin.activity.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="mx-1 d-inline">
+                                        <form action="{{ route('admin.event.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="mx-1 d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
-                                            <button type="submit" name="name" class="btn btn-md btn-danger btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                            <button type="submit" name="name" class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i> Delete</button>
                                         </form>
                                     </td>
                                 </tr>
