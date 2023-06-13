@@ -6,6 +6,8 @@ use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ActivityController extends Controller
 {
@@ -146,6 +148,50 @@ class ActivityController extends Controller
         ]);
 
         return redirect()->route('admin.event.index')->with('success', 'Activity has been updated successfully!');
+    }
+
+    /**
+     * Upload files to storage.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadFiles(Request $request)
+    {
+        $activity_id = $request->input('activity_id');
+        $activity = Activity::where('activity_id', $activity_id)->first();
+
+        if (!$activity) {
+            return redirect()->route('admin.event.index')->with('error', 'Activity not found!');
+        }
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            foreach ($files as $file) {
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+
+                // Mengganti nama file dengan format "namafile_ekstensi"
+                $filename = pathinfo($filename, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
+
+                // Menyimpan file ke folder yang sesuai
+                $file->storeAs('public/events/' . $activity->activity_name, $filename);
+
+                // Update kolom document_name pada table activity dengan nama file
+                if ($activity->document_name == null) {
+                    $activity->update([
+                        'document_name' => $filename,
+                    ]);
+                } else {
+                    $activity->update([
+                        'document_name' => $activity->document_name . ',' . $filename,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.event.index')->with('success', 'Files have been uploaded successfully!');
     }
 
     /**

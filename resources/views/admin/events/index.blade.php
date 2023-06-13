@@ -61,7 +61,7 @@
                                         {{ $activity->activity_location }}
                                     </td>
                                     <td class="project-state">
-                                        @if ( $activity->activity_status == 'PENDING' )
+                                        @if ($activity->activity_status == 'PENDING')
                                             <span class="badge badge-warning">{{ $activity->activity_status }}</span>
                                         @elseif ($activity->activity_status == 'APPROVED')
                                             <span class="badge badge-info">{{ $activity->activity_status }}</span>
@@ -70,7 +70,19 @@
                                         @elseif ($activity->activity_status == 'REJECTED')
                                             <span class="badge badge-danger">{{ $activity->activity_status }}</span>
                                         @endif
-                                    </td>
+                                    
+                                        @if ($activity->activity_start_date == date('Y-m-d'))
+                                            @php
+                                                $activity->activity_status = 'APPROVED';
+                                                $activity->save();
+                                            @endphp
+                                        @elseif ($activity->activity_end_date < date('Y-m-d'))
+                                            @php
+                                                $activity->activity_status = 'COMPLETED';
+                                                $activity->save();
+                                            @endphp
+                                        @endif
+                                    </td>                                    
                                     <td class="project-actions text-right">
                                         <a class="btn btn-primary btn-sm" href="{{ route('admin.event.show', ['activities_id' => $activity->activity_id]) }}">
                                             <i class="fas fa-folder"></i>
@@ -117,5 +129,5 @@
             toastr.error('{{ session('error') }}');
         @endif
     });
-  </script>
+</script>
 @endsection

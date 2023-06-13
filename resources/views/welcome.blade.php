@@ -6,36 +6,101 @@
     <title>{{ config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="shortcut icon" href="https://static-00.iconduck.com/assets.00/laravel-icon-497x512-uwybstke.png">
+    <style>
+      .navbar {
+        height: 68px;
+      }
+      
+      /* Carousel base class */
+      .carousel {
+        margin-bottom: 4rem;
+      }
+      /* Since positioning the image, we need to help out the caption */
+      .carousel-caption {
+        bottom: 3rem;
+        z-index: 10;
+      }
+      /* Declare heights because of positioning of img element */
+      .carousel-item {
+        height: 32rem;
+      }
+
+      .carousel-item img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-white">
-      <div class="container">
-        <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+    <header>
+      <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+          <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="#">Visi & Misi</a>
+              <a class="nav-link active" aria-current="page" href="#">Sejarah</a>
+              <div class="d-flex align-items-center">
+                <a href="{{ route('auth.login') }}" class="btn btn-primary me-3">
+                  Login
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="light">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://source.unsplash.com/random/1440x1440/?mechanical-keyboard" class="bd-placeholder-img"/>
+            <div class="container">
+              <div class="carousel-caption text-start">
+                <h1>Example headline.</h1>
+                <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://source.unsplash.com/random/1440x1440/?abstract" class="bd-placeholder-img"/>
+            <div class="container">
+              <div class="carousel-caption">
+                <h1>Another example headline.</h1>
+                <p>Some representative placeholder content for the second slide of the carousel.</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://source.unsplash.com/random/1440x1440/?hypercar" class="bd-placeholder-img"/>
+            <div class="container">
+              <div class="carousel-caption text-end">
+                <h1>One more for good measure.</h1>
+                <p>Some representative placeholder content for the third slide of this carousel.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav ms-auto">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="https://static-00.iconduck.com/assets.00/laravel-icon-497x512-uwybstke.png" alt="" width="120" height="120">
-        <h1 class="display-5 fw-bold text-body-emphasis">SIKARTAR</h1>
-        <h3 class="text-dark fs-5 fw-light">(Sistem Informasi Karang Taruna)</h3>
-        <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4">
-            <span class="fw-bold">SIKARTAR</span> adalah sebuah website yang dibuat untuk memudahkan pengelolaan data, laporan, dan informasi Karang Taruna.
-          </p>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="{{ route('auth.login') }}" class="btn btn-primary btn-lg px-4 gap-3 rounded-pill">Login</a>
-          </div>
-        </div>
-      </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>      
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>
 </html>

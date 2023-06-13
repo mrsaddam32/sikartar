@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Event Name</label>
-                                <input type="text" id="inputName" name="activity_name" class="form-control">
+                                <input type="text" id="inputName" name="activity_name" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Event Description</label>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputClientCompany">Location</label>
-                                <input type="text" id="inputClientCompany" name="activity_location" class="form-control">
+                                <input type="text" id="inputClientCompany" name="activity_location" class="form-control" autocomplete="off">
                             </div>
                         </div>
                     </div>

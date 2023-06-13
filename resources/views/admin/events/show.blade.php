@@ -16,6 +16,31 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
+    <!-- Modal -->
+    <div class="modal fade" id="uploadFilesModal" tabindex="-1" aria-labelledby="uploadFilesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="uploadFilesModalLabel">Upload Files</h3>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.event.uploadFiles', ['activity_id' => $activity->activity_id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label">Select File(s)</label>
+                            <input type="file" class="form-control" id="fileInput" name="files[]" multiple>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>    
     <section class="content">
         <div class="card">
             <div class="card-header">
@@ -49,27 +74,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Recent Activity</h4>
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
-                                        <span class="username">
-                                            <a href="#">Jonathan Burke Jr.</a>
-                                        </span>
-                                        <span class="description">Shared publicly - 7:45 PM today</span>
-                                    </div>
-                                    <p>
-                                    Lorem ipsum represents a long-held tradition for designers,
-                                    typographers and the like. Some people hate it and argue for
-                                    its demise, but others ignore.
-                                    </p>
-                                    <p>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ $activity->activity_name }}</h3>
@@ -99,23 +103,25 @@
                             <h5 class="mt-5 text-muted">Event files</h5>
                             <ul class="list-unstyled">
                                 <li>
-                                    <a href="" class="btn-link text-white"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-white"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-white"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-white"><i class="far fa-fw fa-image "></i> Logo.png</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-white"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                                    @if ($activity->document_name == null)
+                                        <a href="" class="btn-link text-white">No file uploaded</a>
+                                    @else
+                                        @php
+                                            $documentNames = explode(',', $activity->document_name);
+                                        @endphp
+
+                                        @foreach ($documentNames as $documentName)
+                                            <a href="" class="btn-link text-white d-block">
+                                                <i class="far fa-fw fa-file-word"></i> {{ $documentName }}
+                                            </a>
+                                        @endforeach
+                                    @endif
                                 </li>
                             </ul>
                             <div class="text-center mt-5 mb-3">
-                                <a href="#" class="btn btn-sm btn-primary">Add files</a>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadFilesModal">
+                                    <i class="fas fa-solid fa-plus mr-1"></i>Upload Files
+                                </button>
                                 <a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-info text-white">Back to All Events</a>
                             </div>
                         </div>
@@ -127,4 +133,24 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        // Set toastr options
+        toastr.options = {
+            "positionClass": "toast-top-right",
+        }
+  
+        // Show success message
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+  
+        // Show error message
+        @if (session()->has('error'))
+            toastr.error('{{ session('error') }}');
+        @endif
+    });
+</script>
 @endsection

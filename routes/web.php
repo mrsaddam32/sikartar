@@ -61,6 +61,7 @@ Route::middleware(['isLogged'])->group(function () {
             Route::get('/create', [ActivityController::class, 'create'])->name('create');
             Route::post('/store', [ActivityController::class, 'store'])->name('store');
             Route::get('/detail', [ActivityController::class, 'show'])->name('show');
+            Route::post('/upload-files/{activity_id}', [ActivityController::class, 'uploadFiles'])->name('uploadFiles');
             Route::get('/edit', [ActivityController::class, 'edit'])->name('edit');
             Route::put('/update/{activities_id}', [ActivityController::class, 'update'])->name('update');
             Route::delete('/delete/{id}', [ActivityController::class, 'destroy'])->name('destroy');
