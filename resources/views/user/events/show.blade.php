@@ -27,7 +27,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.event.uploadFiles', ['activity_id' => $activity->activity_id]) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('user.event.uploadFiles', ['activity_id' => $activity->activity_id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
                         <div class="mb-3">
@@ -153,7 +153,7 @@
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadFilesModal">
                                     <i class="fas fa-solid fa-plus mr-1"></i>Upload Files
                                 </button>
-                                <a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-info text-white">Back to All Events</a>
+                                <a href="{{ route('user.event.index') }}" class="btn btn-sm btn-info text-white">Back to All Events</a>
                             </div>
                         </div>
                     </div>

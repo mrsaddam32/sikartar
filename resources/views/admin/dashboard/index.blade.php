@@ -62,14 +62,19 @@
             <div class="col-12 col-sm-6 col-md-3">
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>In {{ $remainingDays }} Days</h3>
-                  <p>{{ $activity->activity_name }}</p>
+                  @isset($activity)
+                    <h3>In {{ $remainingDays }} Days</h3>
+                    <p>{{ $activity->activity_name }}</p>
+                  @else
+                    <h3>No Activity</h3>
+                    <p>No activity found.</p>
+                  @endisset
                 </div>
                 <div class="icon">
                   <i class="fas fa-list"></i>
                 </div>
               </div>
-            </div>
+            </div>            
           </div>
         <!-- /.row -->
       </div><!--/. container-fluid -->

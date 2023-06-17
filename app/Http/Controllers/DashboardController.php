@@ -26,9 +26,14 @@ class DashboardController extends Controller
         $users = User::all()->count();
 
         $activity = Activity::whereDate('activity_start_date', '>=', Carbon::now())->orderBy('activity_start_date', 'ASC')->first();
-        $startDate = Carbon::parse($activity->activity_start_date);
+        $startDate = null;
         $now = Carbon::now();
-        $remainingDays = $startDate->diffInDays($now);
+        $remainingDays = null;
+
+        if ($activity) {
+            $startDate = Carbon::parse($activity->activity_start_date);
+            $remainingDays = $startDate->diffInDays($now);
+        }
 
         $activities = Activity::all()->count();
         $totalIncome = Activity::all()->sum('activity_budget');

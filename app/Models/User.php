@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
+use App\Models\Activity;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,13 @@ class User extends Authenticatable
         static::creating(function ($model) {
             if (!$model->getKey()) {
                 $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+
+        static::updating(function ($user) {
+            if ($user->isDirty('name')) {
+                Activity::where('responsible_person', $user->getOriginal('name'))
+                    ->update(['responsible_person' => $user->name]);
             }
         });
     }

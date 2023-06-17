@@ -13,7 +13,7 @@
         </div><!-- /.row -->
         <div class="row mb-2">
             <div class="col-sm-6">
-                <a href="{{ route('admin.event.create') }}" class="btn btn-info">
+                <a href="{{ route('user.event.create') }}" class="btn btn-info">
                     <i class="fas fa-solid fa-plus mr-1"></i>Add New Event
                 </a>
             </div>
@@ -82,20 +82,14 @@
                                             @endif
                                         </td>                           
                                         <td class="project-actions text-right">
-                                            <a class="btn btn-primary btn-sm" href="{{ route('admin.event.show', ['activities_id' => $activity->activity_id]) }}">
+                                            <a class="btn btn-primary btn-sm" href="{{ route('user.event.show', ['activities_id' => $activity->activity_id]) }}">
                                                 <i class="fas fa-folder"></i>
                                                 View
                                             </a>
-                                            <a class="btn btn-info btn-sm" href="{{ route('admin.event.edit', ['activities_id' => $activity->activity_id]) }}">
+                                            <a class="btn btn-info btn-sm" href="{{ route('user.event.edit', ['activities_id' => $activity->activity_id]) }}">
                                                 <i class="fas fa-pencil-alt"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('admin.event.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="mx-1 d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
-                                                <a href="#" class="btn btn-sm btn-danger btn-delete" onclick="deleteConfirmation(event)"><i class="fas fa-trash"></i> Delete</a>
-                                            </form>                                            
                                         </td>
                                     </tr>
                                 @endforeach
@@ -107,8 +101,8 @@
         </section>
     </section>
     <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+  </div>
+  <!-- /.content-wrapper -->
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <!-- SweetAlert2 -->

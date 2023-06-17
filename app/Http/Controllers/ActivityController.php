@@ -29,7 +29,7 @@ class ActivityController extends Controller
             return view('user.events.index', [
                 'title' => 'Events Management',
                 'active' => 'user/activities',
-            ]);
+            ], compact('activities'));
         }
     }
 
@@ -41,6 +41,7 @@ class ActivityController extends Controller
     public function create()
     {
         $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
+        $user = Auth::user();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.events.create', [
@@ -52,6 +53,7 @@ class ActivityController extends Controller
             return view('user.events.create', [
                 'title' => 'Add New Event',
                 'active' => 'user/activities',
+                'user' => $user,
             ]);
         }
     }
@@ -76,7 +78,11 @@ class ActivityController extends Controller
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
         ]);
 
-        return redirect()->route('admin.event.index')->with('success', 'Activity has been added successfully!');
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return redirect()->route('admin.event.index')->with('success', 'Event has been added successfully!');
+        } else {
+            return redirect()->route('user.event.index')->with('success', 'Event has been added successfully!');
+        }
     }
 
     /**
@@ -110,15 +116,18 @@ class ActivityController extends Controller
      */
     public function edit(Request $request, Activity $activity)
     {
-        $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
-        $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
-
         if (Auth::check() && Auth::user()->role_id == 1) {
+            $users = User::where('role_id', '!=', 1)->where('id', '!=', Auth::user()->id)->get();
+            $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
+
             return view('admin.events.edit', [
                 'title' => 'Edit Event',
                 'active' => 'admin/activities',
             ], compact('activity', 'users'));
         } else {
+            $users = User::where('role_id', '!=', 1)->get();
+            $activity = Activity::where('activity_id', $request->input('activities_id'))->first();
+
             return view('user.events.edit', [
                 'title' => 'Edit Event',
                 'active' => 'user/activities',
@@ -147,7 +156,11 @@ class ActivityController extends Controller
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
         ]);
 
-        return redirect()->route('admin.event.index')->with('success', 'Activity has been updated successfully!');
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return redirect()->route('admin.event.index')->with('success', 'Event has been updated successfully!');
+        } else {
+            return redirect()->route('user.event.index')->with('success', 'Event has been updated successfully!');
+        }
     }
 
     /**
@@ -156,6 +169,58 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function uploadFiles(Request $request)
+    // {
+    //     $activity_id = $request->input('activity_id');
+    //     $activity = Activity::where('activity_id', $activity_id)->first();
+
+    //     if (!$activity) {
+    //         return redirect()->route('admin.event.index')->with('error', 'Activity not found!');
+    //     }
+
+    //     if ($request->hasFile('files')) {
+    //         $files = $request->file('files');
+
+    //         // Check the uploaded files
+    //         $currentFileCount = $activity->document_name ? count(explode(',', $activity->document_name)) : 0;
+    //         $allowedFileCount = 5;
+    //         $allowedMimeTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+
+    //         if (count($files) + $currentFileCount > $allowedFileCount) {
+    //             return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Maximum 5 files can be uploaded!');
+    //         }
+
+    //         foreach ($files as $file) {
+    //             $filename = $file->getClientOriginalName();
+    //             $extension = $file->getClientOriginalExtension();
+
+    //             // Check file type
+    //             if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+    //                 return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Only .docx, .pdf, .xlsx, .pptx files are allowed!');
+    //             }
+
+    //             // Mengganti nama file dengan format "namafile_ekstensi"
+    //             $filename = pathinfo($filename, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
+
+    //             // Menyimpan file ke folder yang sesuai
+    //             $file->storeAs('public/events/' . $activity->activity_name, $filename);
+
+    //             // Update kolom document_name pada table activity dengan nama file
+    //             if ($activity->document_name == null) {
+    //                 $activity->update([
+    //                     'document_name' => $filename,
+    //                 ]);
+    //             } else {
+    //                 $activity->update([
+    //                     'document_name' => $activity->document_name . ',' . $filename,
+    //                 ]);
+    //             }
+    //         }
+    //     }
+
+    //     return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('success', 'Files have been uploaded successfully!');
+    // }
+
     public function uploadFiles(Request $request)
     {
         $activity_id = $request->input('activity_id');
@@ -168,9 +233,60 @@ class ActivityController extends Controller
         if ($request->hasFile('files')) {
             $files = $request->file('files');
 
+            // Check the uploaded files
+            $currentFileCount = $activity->document_name ? count(explode(',', $activity->document_name)) : 0;
+            $allowedFileCount = 5;
+            $allowedMimeTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+
+            if (Auth::check() && Auth::user()->role_id != 1) {
+                // Non-admin user, perform additional checks
+                if (count($files) + $currentFileCount > $allowedFileCount) {
+                    return redirect()->route('user.event.show', ['activities_id' => $activity_id])->with('error', 'Maximum 5 files can be uploaded!');
+                }
+
+                foreach ($files as $file) {
+                    $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+
+                    // Check file type
+                    if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+                        return redirect()->route('user.event.show', ['activities_id' => $activity_id])->with('error', 'Only .docx, .pdf, .xlsx, .pptx files are allowed!');
+                    }
+
+                    // Mengganti nama file dengan format "namafile_ekstensi"
+                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
+
+                    // Menyimpan file ke folder yang sesuai
+                    $file->storeAs('public/events/' . $activity->activity_name, $filename);
+
+                    // Update kolom document_name pada table activity dengan nama file
+                    if ($activity->document_name == null) {
+                        $activity->update([
+                            'document_name' => $filename,
+                        ]);
+                    } else {
+                        $activity->update([
+                            'document_name' => $activity->document_name . ',' . $filename,
+                        ]);
+                    }
+                }
+
+                return redirect()->route('user.event.show', ['activities_id' => $activity_id])->with('success', 'Files have been uploaded successfully!');
+            }
+
+            // Admin user, perform checks without redirection
+            if (count($files) + $currentFileCount > $allowedFileCount) {
+                return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Maximum 5 files can be uploaded!');
+            }
+
             foreach ($files as $file) {
                 $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
+
+                // Check file type
+                if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+                    return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Only .docx, .pdf, .xlsx, .pptx files are allowed!');
+                }
 
                 // Mengganti nama file dengan format "namafile_ekstensi"
                 $filename = pathinfo($filename, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
@@ -189,9 +305,12 @@ class ActivityController extends Controller
                     ]);
                 }
             }
+
+            return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('success', 'Files have been uploaded successfully!');
         }
 
-        return redirect()->route('admin.event.index')->with('success', 'Files have been uploaded successfully!');
+        // No files uploaded
+        return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'No files uploaded!');
     }
 
     /**
@@ -203,8 +322,20 @@ class ActivityController extends Controller
     public function destroy($activity_id)
     {
         $activity = Activity::where('activity_id', $activity_id)->first();
+
+        // Jika activity memiliki document_name maka hapus file yang ada di storage
+        if ($activity->document_name != null) {
+            $files = explode(',', $activity->document_name);
+
+            foreach ($files as $file) {
+                Storage::delete('public/events/' . $activity->activity_name . '/' . $file);
+            }
+
+            Storage::deleteDirectory('public/events/' . $activity->activity_name);
+        }
+
         $activity->delete();
 
-        return redirect()->route('admin.event.index')->with('success', 'Activity has been deleted successfully!');
+        return redirect()->route('admin.event.index')->with('success', 'Event has been deleted successfully!');
     }
 }
