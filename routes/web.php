@@ -32,7 +32,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware(['isLogged'])->group(function () {
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('profile.update');
@@ -78,7 +78,7 @@ Route::middleware(['isLogged'])->group(function () {
         });
     });
 
-    Route::prefix('user')->name('user.')->group(function () {
+    Route::prefix('user')->middleware('role:user')->name('user.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('profile.update');
