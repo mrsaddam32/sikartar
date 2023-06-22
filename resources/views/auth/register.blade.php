@@ -11,7 +11,7 @@
         @csrf
         <div class="input-group mb-3">
           <input type="text" class="form-control @error('name') is-invalid
-          @enderror" name="name" placeholder="Full name" value="{{ old('name') }}">
+          @enderror" name="name" placeholder="Full name" value="{{ old('name') }}" autocomplete="off" autofocus>
           @error('name')
             <div class="invalid-feedback">
               {{ $message }}
@@ -20,7 +20,7 @@
         </div>
         <div class="input-group mb-3">
           <input type="email" class="form-control @error('email') is-invalid
-          @enderror" name="email" placeholder="Email" value="{{ old('email') }}">
+          @enderror" name="email" placeholder="Email" value="{{ old('email') }}" autocomplete="off">
           @error('email')
             <div class="invalid-feedback">
               {{ $message }}

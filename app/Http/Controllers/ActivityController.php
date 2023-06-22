@@ -67,7 +67,6 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         Activity::create([
-            'activity_id' => $request->activity_id,
             'activity_name' => $request->activity_name,
             'responsible_person' => $request->responsible_person,
             'activity_description' => $request->activity_description,

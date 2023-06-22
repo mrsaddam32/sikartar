@@ -27,10 +27,6 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="inputName">Activity ID</label>
-                                <input type="text" id="inputName" name="activity_id" class="form-control">
-                            </div>
-                            <div class="form-group">
                                 <label for="inputName">Event Name</label>
                                 <input type="text" id="inputName" name="activity_name" class="form-control" autocomplete="off">
                             </div>
@@ -116,11 +112,15 @@
 <script>
     $(function () {
         $('#activity_start_date').datetimepicker({
-            format: 'L'
+            format: 'L',
+            useCurrent: false,
+            timeZone: 'Asia/Jakarta'
         });
 
         $('#activity_end_date').datetimepicker({
-            format: 'L'
+            format: 'L',
+            useCurrent: false,
+            timeZone: 'Asia/Jakarta'
         });
     })
 </script>

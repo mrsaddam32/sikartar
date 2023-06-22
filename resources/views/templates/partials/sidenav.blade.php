@@ -1,10 +1,17 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="index3.html" class="brand-link">
-    <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
-  </a>
+  @if (Auth::user()->role_id == 1)
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
+      <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text fw-bold">{{ config('app.name') }}</span>
+    </a>
+  @else
+    <a href="{{ route('user.dashboard') }}" class="brand-link">
+      <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text fw-bold">{{ config('app.name') }}</span>
+    </a>
+  @endif
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -76,6 +83,42 @@
               Images Documentation
             </p>
           </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('admin.keuangan.index') }}" class="nav-link {{ Route::is('admin.keuangan.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-solid fa-dollar-sign"></i>
+            <p>
+              Funds
+            </p>
+          </a>
+        </li>
+        <li class="nav-header">REPORTS SECTION</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-folder"></i>
+            <p>
+              Reports Management
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item ml-3">
+              <a href="https://laravel.com" class="nav-link">
+                <i class="fas fa-file mr-2"></i>
+                <p>
+                  Fund Reports
+                </p>
+              </a>
+            </li>
+            <li class="nav-item ml-3">
+              <a href="https://laravel.com" class="nav-link">
+                <i class="fas fa-file mr-2"></i>
+                <p>
+                  Event Reports
+                </p>
+              </a>
+            </li>
+          </ul>
         </li>
         <li class="nav-header">PROFILE SECTION</li>
         <li class="nav-item">

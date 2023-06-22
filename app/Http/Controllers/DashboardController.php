@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Activity;
+use App\Models\Fund;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class DashboardController extends Controller
         }
 
         $activities = Activity::all()->count();
-        $totalIncome = Activity::all()->sum('activity_budget');
+        $totalIncome = Fund::all()->sum('jumlah_nominal');
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.dashboard.index', [

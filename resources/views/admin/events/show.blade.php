@@ -84,7 +84,7 @@
                             <p class="text-muted">{{ $activity->activity_description }}</p>
                             <div class="text-muted">
                                 <p class="text-sm">Event Date
-                                    <b class="d-block">{{ $activity->activity_start_date }} (-) {{ $activity->activity_end_date }}</b>
+                                    <b class="d-block">{{ $activity->activity_start_date }} ~ {{ $activity->activity_end_date }}</b>
                                 </p>
                                 <p class="text-sm">Event Location
                                     <b class="d-block">{{ $activity->activity_location }}</b>

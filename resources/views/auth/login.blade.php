@@ -33,7 +33,7 @@
       <form action="{{ route('auth.authenticate') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
+          <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" autocomplete="off" autofocus>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
