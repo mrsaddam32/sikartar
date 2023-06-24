@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\User;
+use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -66,6 +67,12 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
+        // // Get the last nominal amount before adding new event
+        // $nominalAmountBefore = Fund::sum('jumlah_nominal');
+
+        // // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
+        // $activityBudget = $request->activity_budget;
+
         Activity::create([
             'activity_name' => $request->activity_name,
             'responsible_person' => $request->responsible_person,
@@ -168,58 +175,6 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function uploadFiles(Request $request)
-    // {
-    //     $activity_id = $request->input('activity_id');
-    //     $activity = Activity::where('activity_id', $activity_id)->first();
-
-    //     if (!$activity) {
-    //         return redirect()->route('admin.event.index')->with('error', 'Activity not found!');
-    //     }
-
-    //     if ($request->hasFile('files')) {
-    //         $files = $request->file('files');
-
-    //         // Check the uploaded files
-    //         $currentFileCount = $activity->document_name ? count(explode(',', $activity->document_name)) : 0;
-    //         $allowedFileCount = 5;
-    //         $allowedMimeTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
-
-    //         if (count($files) + $currentFileCount > $allowedFileCount) {
-    //             return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Maximum 5 files can be uploaded!');
-    //         }
-
-    //         foreach ($files as $file) {
-    //             $filename = $file->getClientOriginalName();
-    //             $extension = $file->getClientOriginalExtension();
-
-    //             // Check file type
-    //             if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
-    //                 return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Only .docx, .pdf, .xlsx, .pptx files are allowed!');
-    //             }
-
-    //             // Mengganti nama file dengan format "namafile_ekstensi"
-    //             $filename = pathinfo($filename, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
-
-    //             // Menyimpan file ke folder yang sesuai
-    //             $file->storeAs('public/events/' . $activity->activity_name, $filename);
-
-    //             // Update kolom document_name pada table activity dengan nama file
-    //             if ($activity->document_name == null) {
-    //                 $activity->update([
-    //                     'document_name' => $filename,
-    //                 ]);
-    //             } else {
-    //                 $activity->update([
-    //                     'document_name' => $activity->document_name . ',' . $filename,
-    //                 ]);
-    //             }
-    //         }
-    //     }
-
-    //     return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('success', 'Files have been uploaded successfully!');
-    // }
-
     public function uploadFiles(Request $request)
     {
         $activity_id = $request->input('activity_id');

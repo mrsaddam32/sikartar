@@ -17,7 +17,8 @@ return new class extends Migration
             $table->increments('id');
             $table->string('sumber_dana');
             $table->integer('jumlah_nominal');
-            $table->date('tanggal_pemasukan');
+            $table->date('tanggal_pemasukkan');
+            $table->integer('total_pemasukkan')->default(0);
             $table->timestamps();
         });
     }

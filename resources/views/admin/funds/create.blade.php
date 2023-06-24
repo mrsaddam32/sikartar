@@ -36,9 +36,9 @@
                             </div>
                             <div class="form-group">
                                 <label>Tanggal Pemasukkan</label>
-                                <div class="input-group date" id="tanggal_pemasukan" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" data-target="#tanggal_pemasukan" name="tanggal_pemasukan" />
-                                    <div class="input-group-append" data-target="#tanggal_pemasukan" data-toggle="datetimepicker">
+                                <div class="input-group date" id="tanggal_pemasukkan" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#tanggal_pemasukkan" name="tanggal_pemasukkan" />
+                                    <div class="input-group-append" data-target="#tanggal_pemasukkan" data-toggle="datetimepicker">
                                         <div class="input-group-text">
                                             <i class="fa fa-calendar"></i>
                                         </div>
@@ -64,7 +64,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
     $(function () {
-        $('#tanggal_pemasukan').datetimepicker({
+        $('#tanggal_pemasukkan').datetimepicker({
             format: 'L',
             useCurrent: false,
             timeZone: 'Asia/Jakarta'

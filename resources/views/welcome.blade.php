@@ -9,11 +9,19 @@
     <style>
       .navbar {
         height: 68px;
+        position: relative;
+        z-index: 1;
       }
       
       /* Carousel base class */
       .carousel {
         margin-bottom: 4rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        background-color: rgba(0, 0, 0, 0.8);
       }
       /* Since positioning the image, we need to help out the caption */
       .carousel-caption {
@@ -22,7 +30,7 @@
       }
       /* Declare heights because of positioning of img element */
       .carousel-item {
-        height: 32rem;
+        height: 37rem;
       }
 
       .carousel-item img {
@@ -34,17 +42,17 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg bg-white">
+      <nav class="navbar navbar-expand-lg bg-transparent">
         <div class="container">
-          <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
+          <a class="navbar-brand text-white fw-bold" href="#">{{ config('app.name') }}</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-              <a class="nav-link active" aria-current="page" href="#">Visi & Misi</a>
-              <a class="nav-link active" aria-current="page" href="#">Sejarah</a>
+              <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
+              <a class="nav-link text-white active" aria-current="page" href="#">Visi & Misi</a>
+              <a class="nav-link text-white active" aria-current="page" href="#">Sejarah</a>
               <div class="d-flex align-items-center">
                 <a href="{{ route('auth.login') }}" class="btn btn-primary me-3">
                   Login
@@ -64,7 +72,7 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="https://source.unsplash.com/random/1440x1440/?mechanical-keyboard" class="bd-placeholder-img"/>
+            <img src="https://source.unsplash.com/random/1440x1440/?abstract-dark" class="bd-placeholder-img"/>
             <div class="container">
               <div class="carousel-caption text-start">
                 <h1>Example headline.</h1>
@@ -73,7 +81,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img src="https://source.unsplash.com/random/1440x1440/?abstract" class="bd-placeholder-img"/>
+            <img src="https://source.unsplash.com/random/1440x1440/?abstract-dark" class="bd-placeholder-img"/>
             <div class="container">
               <div class="carousel-caption">
                 <h1>Another example headline.</h1>
@@ -82,7 +90,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img src="https://source.unsplash.com/random/1440x1440/?hypercar" class="bd-placeholder-img"/>
+            <img src="https://source.unsplash.com/random/1440x1440/?abstract-dark" class="bd-placeholder-img"/>
             <div class="container">
               <div class="carousel-caption text-end">
                 <h1>One more for good measure.</h1>

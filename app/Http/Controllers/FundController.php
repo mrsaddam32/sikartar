@@ -15,18 +15,19 @@ class FundController extends Controller
      */
     public function index()
     {
-        $funds = Fund::orderBy('tanggal_pemasukan', 'desc')->get();
+        $funds = Fund::orderBy('tanggal_pemasukkan', 'desc')->paginate(10);
+        $totalPemasukkan = Fund::sum('jumlah_nominal');
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.funds.index', [
                 'title' => 'Keuangan',
                 'active' => 'admin/keuangan',
-            ], compact('funds'));
+            ], compact('funds', 'totalPemasukkan'));
         } else {
             return view('user.funds.index', [
                 'title' => 'Keuangan',
                 'active' => 'user/keuangan',
-            ], compact('funds'));
+            ], compact('funds', 'totalPemasukkan'));
         }
     }
 
@@ -61,8 +62,10 @@ class FundController extends Controller
         Fund::create([
             'sumber_dana' => $request->sumber_dana,
             'jumlah_nominal' => $request->jumlah_nominal,
-            'tanggal_pemasukan' => date('Y-m-d', strtotime($request->tanggal_pemasukan)),
+            'tanggal_pemasukkan' => date('Y-m-d', strtotime($request->tanggal_pemasukkan)),
         ]);
+
+        Fund::updateTotalPemasukkan();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return redirect()->route('admin.keuangan.index')->with('success', 'New fund entry data has been added');

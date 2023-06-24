@@ -1,6 +1,16 @@
 @extends('templates.layouts.main')
 
 @section('container')
+<style>
+    #keuangan-table {
+        border: none;
+    }
+
+    .card {
+        width: fit-content;
+    }
+</style>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -23,26 +33,29 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content ml-2">
+        @if ($funds->isEmpty())
+            <p class="text-center p-4">There's no data.</p>
+        @else
         <div class="card">
             <div class="card-body p-0">
-                <table id="keuangan-table" class="table table-bordered table-striped">
+                <table id="keuangan-table" class="table table-responsive table-borderless table-striped">
                     <thead class="text-center">
                         <tr>
-                            <th width="5%">No.</th>
-                            <th>Jumlah</th>
+                            <th>No.</th>
                             <th>Sumber Dana</th>
                             <th>Tanggal Pemasukan</th>
+                            <th>Nominal</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($funds as $fund)
                         <tr class="text-center">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>Rp. {{ number_format($fund->jumlah_nominal, 0, ',', '.') }}</td>
+                            <td>{{ ($funds->currentPage() - 1) * $funds->perPage() + $loop->iteration }}</td>
                             <td>{{ $fund->sumber_dana }}</td>
-                            <td>{{ $fund->tanggal_pemasukan }}</td>
+                            <td>{{ $fund->tanggal_pemasukkan }}</td>
+                            <td>Rp. {{ number_format($fund->jumlah_nominal, 0, ',', '.') }}</td>
                             <td>
                                 <a href="#" class="btn btn-info btn-sm mr-1">
                                     <i class="fas fa-solid fa-eye mr-1"></i>View
@@ -61,9 +74,20 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total Pemasukkan:</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center">Rp. {{ number_format($totalPemasukkan, 0, ',', '.') }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
+                {{ $funds->links() }}
             </div>
         </div>
+        @endif
     </section>
     <!-- /.content -->
 </div>

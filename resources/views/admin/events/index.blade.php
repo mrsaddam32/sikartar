@@ -32,7 +32,7 @@
                 @if($activities->isEmpty())
                     <p class="text-center p-4">There's no event data.</p>
                 @else
-                    <table class="table table-striped projects">
+                    <table class="table table-responsive table-striped projects">
                         <thead>
                             <tr>
                                 <th style="width: 1%">#</th>

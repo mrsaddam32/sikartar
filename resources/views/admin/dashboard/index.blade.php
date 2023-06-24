@@ -78,8 +78,43 @@
           </div>
         <!-- /.row -->
       </div><!--/. container-fluid -->
+      <div class="card card-info">
+        <div class="card-body">
+          <div class="chart">
+            <canvas id="myChart" style="height: 30vh; max-width: 100%;"></canvas>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: @json($data),
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value, index, values) {
+                return 'Rp. ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              },
+              color: 'white'
+            }
+          },
+          x: {
+            ticks: {
+              color: 'white'
+            }
+          },
+        },
+      }
+    });
+  </script>
 @endsection

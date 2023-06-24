@@ -38,6 +38,29 @@ class DashboardController extends Controller
 
         $activities = Activity::all()->count();
         $totalIncome = Fund::all()->sum('jumlah_nominal');
+        $monthlyIncome = Fund::selectRaw('SUM(jumlah_nominal) as total_income, MONTH(tanggal_pemasukkan) as month')
+            ->whereYear('tanggal_pemasukkan', date('Y'))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('total_income');
+        $monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        $data = [
+            'labels' => $monthLabels,
+            'datasets' => [
+                [
+                    'label' => 'Monthly Income',
+                    'data' => $monthlyIncome,
+                    'borderWidth' => 3,
+                    'fill' => true,
+                    'borderColor' => '#4e73df',
+                    'pointBackgroundColor' => '#4e73df',
+                    'pointBorderColor' => '#ffffff',
+                    'pointHoverBackgroundColor' => '#ffffff',
+                    'pointHoverBorderColor' => '#4e73df',
+                ]
+            ]
+        ];
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.dashboard.index', [
@@ -49,6 +72,7 @@ class DashboardController extends Controller
                 'remainingDays' => $remainingDays,
                 'activities' => $activities,
                 'totalIncome' => $totalIncome,
+                'data' => $data,
             ]);
         } else {
             return view('user.dashboard.index', [

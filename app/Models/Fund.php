@@ -12,6 +12,15 @@ class Fund extends Model
     protected $fillable = [
         'sumber_dana',
         'jumlah_nominal',
-        'tanggal_pemasukan',
+        'tanggal_pemasukkan',
+        'total_pemasukkan',
     ];
+
+    public static function updateTotalPemasukkan()
+    {
+        $totalPemasukkan = Fund::sum('jumlah_nominal');
+        $lastRecord = Fund::latest()->first();
+        $lastRecord->total_pemasukkan = $totalPemasukkan;
+        $lastRecord->save();
+    }
 }
