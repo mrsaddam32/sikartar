@@ -77,7 +77,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="#" class="nav-link" style="cursor: not-allowed;">
             <i class="nav-icon fas fa-solid fa-image"></i>
             <p>
               Images Documentation
@@ -103,7 +103,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item ml-3">
-              <a href="https://laravel.com" class="nav-link">
+              <a href="#" class="nav-link" style="cursor: not-allowed;">
                 <i class="fas fa-file mr-2"></i>
                 <p>
                   Fund Reports

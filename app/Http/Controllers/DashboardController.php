@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\Fund;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
@@ -42,15 +43,18 @@ class DashboardController extends Controller
             ->whereYear('tanggal_pemasukkan', date('Y'))
             ->groupBy('month')
             ->orderBy('month')
-            ->pluck('total_income');
-        $monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            ->get();
+        $incomeData = $monthlyIncome->pluck('total_income');
+        $monthLabels = $monthlyIncome->pluck('month')->map(function ($month) {
+            return DateTime::createFromFormat('!m', $month)->format('F');
+        });
 
         $data = [
             'labels' => $monthLabels,
             'datasets' => [
                 [
                     'label' => 'Monthly Income',
-                    'data' => $monthlyIncome,
+                    'data' => $incomeData,
                     'borderWidth' => 3,
                     'fill' => true,
                     'borderColor' => '#4e73df',

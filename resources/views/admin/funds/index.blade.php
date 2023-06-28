@@ -24,7 +24,7 @@
         <div class="row mb-2">
             <div class="col-sm-6">
                 <a href="{{ route('admin.keuangan.create') }}" class="btn btn-info">
-                    <i class="fas fa-solid fa-plus mr-1"></i>Add New Data
+                    <i class="fas fa-solid fa-plus mr-1"></i>Input New Data
                 </a>
             </div>
         </div>
