@@ -17,7 +17,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <form action="{{ route('admin.keuangan.store') }}" method="POST">
+        <form action="{{ route('user.keuangan.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-6">
@@ -51,7 +51,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('admin.keuangan.index') }}" class="btn btn-secondary mr-2 my-3">Cancel</a>
+                    <a href="{{ route('user.keuangan.index') }}" class="btn btn-secondary mr-2 my-3">Cancel</a>
                     <button class="btn btn-info" type="submit">Add New Data</button>
                 </div>
             </div>

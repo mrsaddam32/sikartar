@@ -38,7 +38,7 @@
               <div class="info-box mb-3">
                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
                 <div class="info-box-content">
-                  <span class="info-box-text">New Members</span>
+                  <span class="info-box-text">Total Users</span>
                   <span class="info-box-number num" data-val="{{ $users }}">000</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -46,12 +46,11 @@
               <!-- /.info-box -->
             </div>
             <!-- /.col -->
-            <!-- /.col -->
             <div class="col-12 col-sm-6 col-md-3">
               <div class="info-box mb-3">
                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-solid fa-list"></i></span>
                 <div class="info-box-content">
-                  <span class="info-box-text">Total Activites (Kegiatan)</span>
+                  <span class="info-box-text">Total Events</span>
                   <span class="info-box-number">{{ $activities }}</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -60,31 +59,37 @@
             </div>
             <!-- /.col -->
             <div class="col-12 col-sm-6 col-md-3">
-              <div class="small-box bg-info">
-                <div class="inner">
-                  @isset($activity)
-                    <h3>In {{ $remainingDays }} Days</h3>
-                    <p>{{ $activity->activity_name }}</p>
-                  @else
-                    <h3>No Activity</h3>
-                    <p>No activity found.</p>
-                  @endisset
-                </div>
-                <div class="icon">
-                  <i class="fas fa-list"></i>
-                </div>
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-clock"></i></span>
+                @isset($activity)
+                  <div class="info-box-content">
+                    <span class="info-box-text">In {{ $remainingDays }} Days</span>
+                    <span class="info-box-number">{{ $activity->activity_name }}</span>
+                  </div>
+                @else
+                  <div class="info-box-content">
+                    <span class="info-box-text">No Activity</span>
+                    <span class="info-box-number">No activity found.</span>
+                  </div>
+                @endisset
+                <!-- /.info-box-content -->
               </div>
-            </div>            
+              <!-- /.info-box -->
+            </div>           
           </div>
         <!-- /.row -->
-      </div><!--/. container-fluid -->
-      <div class="card card-info">
-        <div class="card-body">
-          <div class="chart">
-            <canvas id="myChart" style="height: 30vh; max-width: 100%;"></canvas>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card card-info">
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
   </div>

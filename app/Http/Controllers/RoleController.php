@@ -23,17 +23,7 @@ class RoleController extends Controller
                 ->addColumn('created_at', function ($role) {
                     return $role->created_at->format('d F Y');
                 })
-                ->addColumn('action', function ($role) {
-                    return '
-                    <a href="#" class="btn btn-sm btn-icon-only text-warning" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                        <i class="fas fa-user-edit"></i>
-                    </a>
-                    <a href="#" class="btn btn-sm btn-icon-only text-danger" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                ';
-                })
-                ->rawColumns(['action'])
+                ->rawColumns(['created_at'])
                 ->make(true);
         }
 

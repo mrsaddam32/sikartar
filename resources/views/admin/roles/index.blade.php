@@ -27,7 +27,6 @@
                             <th>Role Name</th>
                             <th>Role Description</th>
                             <th>Created At</th>
-                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody></tbody>
@@ -58,7 +57,6 @@
                 {data: 'role_name', name: 'role_name'},
                 {data: 'role_description', name: 'role_description'},
                 {data: 'created_at', name: 'created_at'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
     });

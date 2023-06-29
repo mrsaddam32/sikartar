@@ -16,18 +16,19 @@ class FundController extends Controller
     public function index()
     {
         $funds = Fund::orderBy('tanggal_pemasukkan', 'desc')->paginate(10);
-        $totalPemasukkan = Fund::sum('jumlah_nominal');
+        $totalPemasukkan = Fund::all()->sum('jumlah_nominal');
+        $sisaPemasukkan = Fund::orderBy('tanggal_pemasukkan', 'desc')->first()->total_pemasukkan;
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.funds.index', [
                 'title' => 'Keuangan',
                 'active' => 'admin/keuangan',
-            ], compact('funds', 'totalPemasukkan'));
+            ], compact('funds', 'sisaPemasukkan', 'totalPemasukkan'));
         } else {
             return view('user.funds.index', [
                 'title' => 'Keuangan',
                 'active' => 'user/keuangan',
-            ], compact('funds', 'totalPemasukkan'));
+            ], compact('funds', 'sisaPemasukkan', 'totalPemasukkan'));
         }
     }
 

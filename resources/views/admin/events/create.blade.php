@@ -110,18 +110,34 @@
   <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-    $(function () {
-        $('#activity_start_date').datetimepicker({
-            format: 'L',
-            useCurrent: false,
-            timeZone: 'Asia/Jakarta'
-        });
+    $(document).ready(function() {
+    // Set toastr options
+    toastr.options = {
+        "positionClass": "toast-top-right",
+    }
 
-        $('#activity_end_date').datetimepicker({
-            format: 'L',
-            useCurrent: false,
-            timeZone: 'Asia/Jakarta'
-        });
-    })
+    // Show success message
+    @if (session()->has('success'))
+        toastr.success('{{ session('success') }}');
+    @endif
+
+    // Show error message
+    @if (session()->has('error'))
+        toastr.error('{{ session('error') }}');
+    @endif
+
+    // Datepicker initialization
+    $('#activity_start_date').datetimepicker({
+        format: 'L',
+        useCurrent: false,
+        timeZone: 'Asia/Jakarta'
+    });
+
+    $('#activity_end_date').datetimepicker({
+        format: 'L',
+        useCurrent: false,
+        timeZone: 'Asia/Jakarta'
+    });
+});
 </script>
 @endsection

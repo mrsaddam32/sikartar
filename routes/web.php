@@ -93,5 +93,13 @@ Route::middleware(['isLogged'])->group(function () {
             Route::get('/edit', [ActivityController::class, 'edit'])->name('edit');
             Route::put('/update/{activities_id}', [ActivityController::class, 'update'])->name('update');
         });
+
+        Route::prefix('keuangan')->name('keuangan.')->group(function () {
+            Route::get('/', [FundController::class, 'index'])->name('index');
+            Route::get('/create', [FundController::class, 'create'])->name('create');
+            Route::post('/store', [FundController::class, 'store'])->name('store');
+            Route::get('/edit', [FundController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}', [FundController::class, 'update'])->name('update');
+        });
     });
 });

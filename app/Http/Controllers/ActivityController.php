@@ -67,11 +67,24 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        // // Get the last nominal amount before adding new event
-        // $nominalAmountBefore = Fund::sum('jumlah_nominal');
+        // Get the last nominal amount before adding new event
+        $totalAmountBefore = Fund::orderBy('total_pemasukkan', 'desc')->first()->total_pemasukkan;
 
-        // // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
-        // $activityBudget = $request->activity_budget;
+        // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
+        $activityBudget = $request->activity_budget;
+
+        // Check if the inputted budget is greater than the last nominal amount
+        if ($activityBudget > $totalAmountBefore) {
+            return redirect()->back()->with('error', 'The budget is greater than the remaining nominal amount!');
+        } else {
+            // Deduct the nominal amount from the inputted budget
+            $nominalAmountAfter = $totalAmountBefore - $activityBudget;
+
+            // Update the latest total_pemasukkan in the funds table
+            Fund::orderBy('total_pemasukkan', 'desc')->first()->update([
+                'total_pemasukkan' => $nominalAmountAfter,
+            ]);
+        }
 
         Activity::create([
             'activity_name' => $request->activity_name,

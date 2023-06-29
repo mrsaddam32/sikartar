@@ -69,7 +69,7 @@
                                                 <span class="badge badge-danger">{{ $activity->activity_status }}</span>
                                             @endif
                                         
-                                            @if ($activity->activity_start_date >= date('Y-m-d'))
+                                            @if ($activity->activity_start_date == date('Y-m-d'))
                                                 @php
                                                     $activity->activity_status = 'APPROVED';
                                                     $activity->save();

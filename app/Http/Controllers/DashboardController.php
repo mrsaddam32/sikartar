@@ -32,6 +32,12 @@ class DashboardController extends Controller
         $now = Carbon::now();
         $remainingDays = null;
 
+        $activityStatus = [
+            'pendingActivity' => Activity::where('activity_status', 'PENDING')->count(),
+            'onProgressActivity' => Activity::where('activity_status', 'APPROVED')->count(),
+            'completedActivity' => Activity::where('activity_status', 'COMPLETED')->count(),
+        ];
+
         if ($activity) {
             $startDate = Carbon::parse($activity->activity_start_date);
             $remainingDays = $startDate->diffInDays($now);
@@ -56,7 +62,6 @@ class DashboardController extends Controller
                     'label' => 'Monthly Income',
                     'data' => $incomeData,
                     'borderWidth' => 3,
-                    'fill' => true,
                     'borderColor' => '#4e73df',
                     'pointBackgroundColor' => '#4e73df',
                     'pointBorderColor' => '#ffffff',
@@ -75,6 +80,7 @@ class DashboardController extends Controller
                 'activity' => $activity,
                 'remainingDays' => $remainingDays,
                 'activities' => $activities,
+                'activityStatus' => $activityStatus,
                 'totalIncome' => $totalIncome,
                 'data' => $data,
             ]);
@@ -83,6 +89,12 @@ class DashboardController extends Controller
                 'title' => 'Dashboard User',
                 'active' => 'dashboard',
                 'user' => $user,
+                'activity' => $activity,
+                'remainingDays' => $remainingDays,
+                'activities' => $activities,
+                'activityStatus' => $activityStatus,
+                'totalIncome' => $totalIncome,
+                'data' => $data,
             ]);
         }
     }

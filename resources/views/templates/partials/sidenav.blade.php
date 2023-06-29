@@ -80,7 +80,7 @@
           <a href="#" class="nav-link" style="cursor: not-allowed;">
             <i class="nav-icon fas fa-solid fa-image"></i>
             <p>
-              Gallery
+              Gallery ❌
             </p>
           </a>
         </li>
@@ -140,9 +140,17 @@
         </li>
         <li class="nav-item">
           <a href="{{ route('user.event.index') }}" class="nav-link {{ Route::is('user.event.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-solid fa-file-contract"></i>
+            <i class="nav-icon fas fa-solid fa-list"></i>
             <p>
               Events
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('user.keuangan.index') }}" class="nav-link {{ Route::is('user.keuangan.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-solid fa-dollar-sign"></i>
+            <p>
+              Funds
             </p>
           </a>
         </li>

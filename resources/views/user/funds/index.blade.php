@@ -23,7 +23,7 @@
         </div><!-- /.row -->
         <div class="row mb-2">
             <div class="col-sm-6">
-                <a href="{{ route('admin.keuangan.create') }}" class="btn btn-info">
+                <a href="{{ route('user.keuangan.create') }}" class="btn btn-info">
                     <i class="fas fa-solid fa-plus mr-1"></i>Input New Data
                 </a>
             </div>
@@ -80,13 +80,6 @@
                             <td></td>
                             <td></td>
                             <td class="text-center">Rp. {{ number_format($totalPemasukkan, 0, ',', '.') }}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sisa Pemasukkan:</strong></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-center">Rp. {{ number_format($sisaPemasukkan, 0, ',', '.') }}</td>
                             <td></td>
                         </tr>
                     </tfoot>
