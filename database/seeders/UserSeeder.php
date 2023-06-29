@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $faker->name,
                 'email' => $faker->email,
-                'password' => bcrypt('Inipasswordaman123'),
+                'password' => bcrypt(env('DEFAULT_USER_PASSWORD', 'Userpassword123')),
                 'role_id' => 2,
             ]);
         }

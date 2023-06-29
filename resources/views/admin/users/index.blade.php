@@ -11,6 +11,13 @@
                 <h1 class="m-0">{{ $title }}</h1>
               </div><!-- /.col -->
             </div><!-- /.row -->
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                  <i class="fas fa-plus mr-1"></i>
+                  Add New User</a>
+              </div><!-- /.col -->
+            </div>
           </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->

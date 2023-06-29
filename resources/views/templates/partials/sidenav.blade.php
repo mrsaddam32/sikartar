@@ -80,7 +80,7 @@
           <a href="#" class="nav-link" style="cursor: not-allowed;">
             <i class="nav-icon fas fa-solid fa-image"></i>
             <p>
-              Images Documentation
+              Gallery
             </p>
           </a>
         </li>
