@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fund;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +17,24 @@ class FundController extends Controller
     public function index()
     {
         $funds = Fund::orderBy('tanggal_pemasukkan', 'desc')->paginate(10);
-        $totalPemasukkan = Fund::all()->sum('jumlah_nominal');
-        $sisaPemasukkan = Fund::orderBy('tanggal_pemasukkan', 'desc')->first()->total_pemasukkan;
+        $totalPemasukkan = Fund::sum('jumlah_nominal');
+        $latestFund = Fund::orderBy('tanggal_pemasukkan', 'desc')->first();
+
+        $sisaPemasukkan = 0;
+
+        if ($latestFund) {
+            $totalOutcome = Outcome::sum('nominal_pengeluaran');
+
+            if ($totalOutcome === null) {
+                $totalOutcome = 0;
+            }
+
+            $sisaPemasukkan = $totalPemasukkan - $totalOutcome;
+
+            if ($sisaPemasukkan === 0) {
+                $sisaPemasukkan = $latestFund->jumlah_nominal;
+            }
+        }
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return view('admin.funds.index', [
@@ -60,13 +77,24 @@ class FundController extends Controller
      */
     public function store(Request $request)
     {
-        Fund::create([
+        $totalPemasukkan = Fund::sum('jumlah_nominal');
+
+        if ($totalPemasukkan === null) {
+            $totalPemasukkan = 0;
+        }
+
+        $sisaPemasukkan = $totalPemasukkan - Outcome::sum('nominal_pengeluaran');
+
+        if ($sisaPemasukkan == 0) {
+            $sisaPemasukkan = $totalPemasukkan;
+        }
+
+        $fund = Fund::create([
             'sumber_dana' => $request->sumber_dana,
             'jumlah_nominal' => $request->jumlah_nominal,
             'tanggal_pemasukkan' => date('Y-m-d', strtotime($request->tanggal_pemasukkan)),
+            'total_pemasukkan' => $sisaPemasukkan + $request->jumlah_nominal,
         ]);
-
-        Fund::updateTotalPemasukkan();
 
         if (Auth::check() && Auth::user()->role_id == 1) {
             return redirect()->route('admin.keuangan.index')->with('success', 'New fund entry data has been added');

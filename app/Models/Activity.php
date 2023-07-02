@@ -37,4 +37,9 @@ class Activity extends Model
             $activity->activity_id = $newId;
         });
     }
+
+    public function outcomes()
+    {
+        return $this->hasMany(Outcome::class, 'activity_id', 'id');
+    }
 }

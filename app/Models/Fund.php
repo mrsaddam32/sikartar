@@ -23,4 +23,25 @@ class Fund extends Model
         $lastRecord->total_pemasukkan = $totalPemasukkan;
         $lastRecord->save();
     }
+
+    public static function updateSisaPemasukkan()
+    {
+        $totalPemasukkan = Fund::sum('jumlah_nominal');
+        $totalOutcome = Outcome::sum('nominal_pengeluaran');
+        $sisaPemasukkan = $totalPemasukkan - $totalOutcome;
+
+        if ($sisaPemasukkan === 0) {
+            $latestFund = Fund::latest()->first();
+            $sisaPemasukkan = $latestFund->jumlah_nominal;
+        }
+
+        $lastRecord = Fund::latest()->first();
+        $lastRecord->sisa_pemasukkan = $sisaPemasukkan;
+        $lastRecord->save();
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class, 'sumber_dana', 'id');
+    }
 }

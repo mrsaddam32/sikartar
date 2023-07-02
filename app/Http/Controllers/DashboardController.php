@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Fund;
+use App\Models\Outcome;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DateTime;
@@ -55,6 +56,8 @@ class DashboardController extends Controller
             return DateTime::createFromFormat('!m', $month)->format('F');
         });
 
+        $totalOutcome = Outcome::all()->sum('nominal_pengeluaran');
+
         $data = [
             'labels' => $monthLabels,
             'datasets' => [
@@ -82,6 +85,7 @@ class DashboardController extends Controller
                 'activities' => $activities,
                 'activityStatus' => $activityStatus,
                 'totalIncome' => $totalIncome,
+                'totalOutcome' => $totalOutcome,
                 'data' => $data,
             ]);
         } else {
@@ -94,6 +98,7 @@ class DashboardController extends Controller
                 'activities' => $activities,
                 'activityStatus' => $activityStatus,
                 'totalIncome' => $totalIncome,
+                'totalOutcome' => $totalOutcome,
                 'data' => $data,
             ]);
         }

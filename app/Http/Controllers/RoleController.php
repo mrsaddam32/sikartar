@@ -51,7 +51,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = new Role;
+        $role->role_id = $request->role_id;
+        $role->role_name = $request->role_name;
+        $role->role_description = $request->role_description;
+        $role->save();
+
+        return redirect()->route('admin.roles.index')->with('success', 'New Role has been created successfully!');
     }
 
     /**

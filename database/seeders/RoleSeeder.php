@@ -18,13 +18,13 @@ class RoleSeeder extends Seeder
         Role::create([
             'role_id' => 1,
             'role_name' => 'Admin',
-            'role_description' => 'Admin Role',
+            'role_description' => 'Admin Role can do anything, including: Users Management, Funds Management, Activities Management.',
         ]);
 
         Role::create([
             'role_id' => 2,
             'role_name' => 'User',
-            'role_description' => 'User Role',
+            'role_description' => 'User Role can only do: Activities Management, Funds Management.',
         ]);
     }
 }

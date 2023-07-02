@@ -50,8 +50,8 @@
               <div class="info-box mb-3">
                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-solid fa-list"></i></span>
                 <div class="info-box-content">
-                  <span class="info-box-text">Total Events</span>
-                  <span class="info-box-number">{{ $activities }}</span>
+                  <span class="info-box-text">Total Outcome</span>
+                  <span class="info-box-number">Rp. {{ number_format($totalOutcome, 0, ',', '.') }}</span>
                 </div>
                 <!-- /.info-box-content -->
               </div>

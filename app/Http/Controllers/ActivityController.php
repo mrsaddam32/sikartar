@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\Fund;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -68,12 +69,18 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         // Get the last nominal amount before adding new event
-        $totalAmountBefore = Fund::orderBy('total_pemasukkan', 'desc')->first()->total_pemasukkan;
+        $totalAmountBefore = Fund::orderBy('total_pemasukkan', 'desc')->value('total_pemasukkan');
+
+        $totalOutcome = Outcome::sum('nominal_pengeluaran');
+
+        if ($totalAmountBefore - $totalOutcome == 0) {
+            return redirect()->back()->with('error', 'The budget is not enough!');
+        }
 
         // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
         $activityBudget = $request->activity_budget;
 
-        // Check if the inputted budget is greater than the last nominal amount
+        // Check if the inputted budget is greater than or equal to the remaining nominal amount
         if ($activityBudget > $totalAmountBefore) {
             return redirect()->back()->with('error', 'The budget is greater than the remaining nominal amount!');
         } else {
@@ -81,12 +88,12 @@ class ActivityController extends Controller
             $nominalAmountAfter = $totalAmountBefore - $activityBudget;
 
             // Update the latest total_pemasukkan in the funds table
-            Fund::orderBy('total_pemasukkan', 'desc')->first()->update([
+            Fund::orderBy('tanggal_pemasukkan', 'desc')->first()->update([
                 'total_pemasukkan' => $nominalAmountAfter,
             ]);
         }
 
-        Activity::create([
+        $activity = Activity::create([
             'activity_name' => $request->activity_name,
             'responsible_person' => $request->responsible_person,
             'activity_description' => $request->activity_description,
@@ -95,6 +102,13 @@ class ActivityController extends Controller
             'activity_location' => $request->activity_location,
             'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date) + 86400),
             'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
+        ]);
+
+        $outcome = Outcome::create([
+            'activity_id' => $activity->activity_id,
+            'activity_name' => $activity->activity_name,
+            'nominal_pengeluaran' => $activity->activity_budget,
+            'tanggal_pengeluaran' => $activity->created_at->toDateString(),
         ]);
 
         if (Auth::check() && Auth::user()->role_id == 1) {
