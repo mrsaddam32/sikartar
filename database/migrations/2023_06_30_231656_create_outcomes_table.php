@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('outcomes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('activity_id', 8)->unique();
+            $table->string('activity_id', 8);
             $table->string('activity_name');
             $table->integer('nominal_pengeluaran');
             $table->date('tanggal_pengeluaran');
             $table->timestamps();
-            $table->foreign('activity_id')->references('activity_id')->on('activities')->onDelete('cascade');
+            $table->foreign('activity_id')->references('activity_id')->on('activities')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

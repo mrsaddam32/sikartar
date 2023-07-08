@@ -66,21 +66,111 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'activity_name' => 'required|string|max:255',
+    //             'responsible_person' => 'required|string|max:255',
+    //             'activity_description' => 'required|string',
+    //             'activity_budget' => 'required|numeric',
+    //             'activity_status' => 'required|string|max:255',
+    //             'activity_location' => 'required|string|max:255',
+    //             'activity_start_date' => 'required|date',
+    //             'activity_end_date' => 'required|date',
+    //         ]
+    //     );
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+
+    //     // Get the last total_pemasukkan in the funds table before the inputted budget 'activity_budget'
+    //     $latestAmount = Fund::where('id', Fund::max('id'))->first();
+    //     $totalAmountBefore = $latestAmount->total_pemasukkan;
+
+    //     $totalOutcome = Outcome::sum('nominal_pengeluaran');
+
+    //     // If $totalAmountBefore == 0 show error message
+    //     if ($totalAmountBefore == 0) {
+    //         return redirect()->back()->with('error', 'Your budget is empty!');
+    //     }
+
+    //     // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
+    //     $activityBudget = $request->activity_budget;
+
+    //     // Check if the inputted budget is greater than the remaining nominal amount
+    //     if ($activityBudget > $totalAmountBefore) {
+    //         return redirect()->back()->with('error', 'The budget is greater than the remaining nominal amount!');
+    //     } else {
+    //         // Deduct the nominal amount from the inputted budget
+    //         $nominalAmountAfter = $totalAmountBefore - $activityBudget;
+
+    //         // Update the latest total_pemasukkan in the funds table
+    //         $latestAmount->total_pemasukkan = $nominalAmountAfter;
+    //         $latestAmount->save();
+    //     }
+
+    //     $activity = Activity::create([
+    //         'activity_name' => $request->activity_name,
+    //         'responsible_person' => $request->responsible_person,
+    //         'activity_description' => $request->activity_description,
+    //         'activity_budget' => $request->activity_budget,
+    //         'activity_status' => $request->activity_status,
+    //         'activity_location' => $request->activity_location,
+    //         'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date)),
+    //         'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date)),
+    //     ]);
+
+    //     $outcome = Outcome::create([
+    //         'activity_id' => $activity->activity_id,
+    //         'activity_name' => $activity->activity_name,
+    //         'nominal_pengeluaran' => $activity->activity_budget,
+    //         'tanggal_pengeluaran' => date('Y-m-d'),
+    //     ]);
+
+    //     if (Auth::check() && Auth::user()->role_id == 1) {
+    //         return redirect()->route('admin.event.index')->with('success', 'Event has been added successfully!');
+    //     } else {
+    //         return redirect()->route('user.event.index')->with('success', 'Event has been added successfully!');
+    //     }
+    // }
     public function store(Request $request)
     {
-        // Get the last nominal amount before adding new event
-        $totalAmountBefore = Fund::orderBy('total_pemasukkan', 'desc')->value('total_pemasukkan');
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'activity_name' => 'required|string|max:255',
+                'responsible_person' => 'required|string|max:255',
+                'activity_description' => 'required|string',
+                'activity_budget' => 'required|numeric',
+                'activity_status' => 'required|string|max:255',
+                'activity_location' => 'required|string|max:255',
+                'activity_start_date' => 'required|date',
+                'activity_end_date' => 'required|date',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Get the last total_pemasukkan in the funds table before the inputted budget 'activity_budget'
+        $latestAmount = Fund::orderBy('id', 'desc')->first();
+        $totalAmountBefore = $latestAmount->total_pemasukkan;
 
         $totalOutcome = Outcome::sum('nominal_pengeluaran');
 
-        if ($totalAmountBefore - $totalOutcome == 0) {
-            return redirect()->back()->with('error', 'The budget is not enough!');
+        // If $totalAmountBefore == 0 show error message
+        if ($totalAmountBefore == 0) {
+            return redirect()->back()->with('error', 'Your budget is empty!');
         }
 
         // Do the process of deducting the nominal amount from the inputted budget 'activity_budget'
         $activityBudget = $request->activity_budget;
 
-        // Check if the inputted budget is greater than or equal to the remaining nominal amount
+        // Check if the inputted budget is greater than the remaining nominal amount
         if ($activityBudget > $totalAmountBefore) {
             return redirect()->back()->with('error', 'The budget is greater than the remaining nominal amount!');
         } else {
@@ -88,9 +178,8 @@ class ActivityController extends Controller
             $nominalAmountAfter = $totalAmountBefore - $activityBudget;
 
             // Update the latest total_pemasukkan in the funds table
-            Fund::orderBy('tanggal_pemasukkan', 'desc')->first()->update([
-                'total_pemasukkan' => $nominalAmountAfter,
-            ]);
+            $latestAmount->total_pemasukkan = $nominalAmountAfter;
+            $latestAmount->save();
         }
 
         $activity = Activity::create([
@@ -100,15 +189,15 @@ class ActivityController extends Controller
             'activity_budget' => $request->activity_budget,
             'activity_status' => $request->activity_status,
             'activity_location' => $request->activity_location,
-            'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date) + 86400),
-            'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date) + 86400),
+            'activity_start_date' => date('Y-m-d', strtotime($request->activity_start_date)),
+            'activity_end_date' => date('Y-m-d', strtotime($request->activity_end_date)),
         ]);
 
         $outcome = Outcome::create([
             'activity_id' => $activity->activity_id,
             'activity_name' => $activity->activity_name,
             'nominal_pengeluaran' => $activity->activity_budget,
-            'tanggal_pengeluaran' => $activity->created_at->toDateString(),
+            'tanggal_pengeluaran' => date('Y-m-d'),
         ]);
 
         if (Auth::check() && Auth::user()->role_id == 1) {

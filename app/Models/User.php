@@ -93,4 +93,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class, 'role_id', 'role_id');
     }
+
+    /**
+     * Get all of the activities for the User
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class, 'responsible_person', 'responsible_person');
+    }
 }

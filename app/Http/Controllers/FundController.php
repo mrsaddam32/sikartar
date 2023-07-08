@@ -18,11 +18,11 @@ class FundController extends Controller
     {
         $funds = Fund::orderBy('tanggal_pemasukkan', 'desc')->paginate(10);
         $totalPemasukkan = Fund::sum('jumlah_nominal');
-        $latestFund = Fund::orderBy('tanggal_pemasukkan', 'desc')->first();
+        $latestAmount = Fund::where('id', Fund::max('id'))->first();
 
         $sisaPemasukkan = 0;
 
-        if ($latestFund) {
+        if ($latestAmount) {
             $totalOutcome = Outcome::sum('nominal_pengeluaran');
 
             if ($totalOutcome === null) {
@@ -32,7 +32,7 @@ class FundController extends Controller
             $sisaPemasukkan = $totalPemasukkan - $totalOutcome;
 
             if ($sisaPemasukkan === 0) {
-                $sisaPemasukkan = $latestFund->jumlah_nominal;
+                $sisaPemasukkan = $latestAmount->total_pemasukkan;
             }
         }
 
@@ -97,9 +97,9 @@ class FundController extends Controller
         ]);
 
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return redirect()->route('admin.keuangan.index')->with('success', 'New fund entry data has been added');
+            return redirect()->route('admin.keuangan.index')->with('success', 'New Data Has Been Added!');
         } else {
-            return redirect()->route('user.keuangan.index')->with('success', 'New fund entry data has been added');
+            return redirect()->route('user.keuangan.index')->with('success', 'New Data Has Been Added!');
         }
     }
 

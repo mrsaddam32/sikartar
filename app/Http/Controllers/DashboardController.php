@@ -45,7 +45,9 @@ class DashboardController extends Controller
         }
 
         $activities = Activity::all()->count();
+
         $totalIncome = Fund::all()->sum('jumlah_nominal');
+
         $monthlyIncome = Fund::selectRaw('SUM(jumlah_nominal) as total_income, MONTH(tanggal_pemasukkan) as month')
             ->whereYear('tanggal_pemasukkan', date('Y'))
             ->groupBy('month')

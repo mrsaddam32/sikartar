@@ -9,6 +9,8 @@ class Outcome extends Model
 {
     use HasFactory;
 
+    protected $keyType = 'string';
+
     protected $fillable = [
         'activity_id',
         'activity_name',
@@ -16,8 +18,13 @@ class Outcome extends Model
         'tanggal_pengeluaran',
     ];
 
+    /**
+     * Get the activity that owns the outcome.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function activity()
     {
-        return $this->belongsTo(Activity::class);
+        return $this->belongsTo(Activity::class, 'activity_id', 'activity_id');
     }
 }

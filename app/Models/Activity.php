@@ -27,6 +27,11 @@ class Activity extends Model
         'document_name',
     ];
 
+    /**
+     * The 'booting' method of the model.
+     * 
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();
@@ -38,8 +43,23 @@ class Activity extends Model
         });
     }
 
+    /**
+     * Get the outcomes for the activity.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function outcomes()
     {
-        return $this->hasMany(Outcome::class, 'activity_id', 'id');
+        return $this->hasMany(Outcome::class, 'activity_id', 'activity_id');
+    }
+
+    /**
+     * Get the users for the activity.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'activity_user', 'activity_id', 'user_id');
     }
 }

@@ -28,34 +28,59 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputName">Event Name</label>
-                                <input type="text" id="inputName" name="activity_name" class="form-control" autocomplete="off">
+                                <input type="text" id="inputName" name="activity_name" class="form-control @error('activity_name') is-invalid @enderror" value="{{ old('activity_name') }}" autocomplete="off">
+                                @error('activity_name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Event Description</label>
-                                <textarea id="inputDescription" name="activity_description" class="form-control" rows="4"></textarea>
+                                <textarea id="inputDescription" name="activity_description" class="form-control @error('activity_description') is-invalid @enderror" rows="4">{{ old('activity_description') }}</textarea>
+                                @error('activity_description')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Responsible Person</label>
-                                <select id="inputStatus" name="responsible_person" class="form-control custom-select">
+                                <select id="inputStatus" name="responsible_person" class="form-control @error('responsible_person') is-invalid @enderror custom-select">
                                     <option selected disabled>Select one</option>
                                     @foreach ( $users as $user )
-                                        <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('responsible_person')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Event Status</label>
-                                <select id="inputStatus" name="activity_status" class="form-control custom-select">
+                                <select id="inputStatus" name="activity_status" class="form-control @error('activity_status') is-invalid @enderror custom-select">
                                     <option selected disabled>Select one</option>
                                     <option value="PENDING">PENDING</option>
                                     <option value="REJECTED">REJECTED</option>
                                     <option value="APPROVED">APPROVED</option>
                                     <option value="COMPLETED">COMPLETED</option>
                                 </select>
+                                @error('activity_status')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputClientCompany">Location</label>
-                                <input type="text" id="inputClientCompany" name="activity_location" class="form-control" autocomplete="off">
+                                <input type="text" id="inputClientCompany" name="activity_location" class="form-control @error('activity_location') is-invalid @enderror" value="{{ old('activity_location') }}" autocomplete="off">
+                                @error('activity_location')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -68,12 +93,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="activity_budget">Estimated budget</label>
-                                <input type="number" id="activity_budget" name="activity_budget" class="form-control">
+                                <input type="number" id="activity_budget" name="activity_budget" class="form-control @error('activity_budget') is-invalid @enderror" value="{{ old('activity_budget') }}">
+                                @error('activity_budget')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <div class="input-group date" id="activity_start_date" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" data-target="#activity_start_date" name="activity_start_date" />
+                                    <input type="text" class="form-control @error('activity_start_date') is-invalid @enderror datetimepicker-input" data-target="#activity_start_date" name="activity_start_date" value="{{ old('activity_start_date') }}" />
                                     <div class="input-group-append" data-target="#activity_start_date" data-toggle="datetimepicker">
                                         <div class="input-group-text">
                                             <i class="fa fa-calendar"></i>
@@ -84,7 +114,7 @@
                             <div class="form-group">
                                 <label>End Date</label>
                                 <div class="input-group date" id="activity_end_date" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" data-target="#activity_end_date" name="activity_end_date" />
+                                    <input type="text" class="form-control @error('activity_end_date') is-invalid @enderror datetimepicker-input" data-target="#activity_end_date" name="activity_end_date" value="{{ old('activity_end_date') }}" />
                                     <div class="input-group-append" data-target="#activity_end_date" data-toggle="datetimepicker">
                                         <div class="input-group-text">
                                             <i class="fa fa-calendar"></i>

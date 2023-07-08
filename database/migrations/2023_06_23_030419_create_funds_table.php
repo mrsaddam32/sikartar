@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('funds', function (Blueprint $table) {
             $table->increments('id');
             $table->string('sumber_dana');
-            $table->integer('jumlah_nominal');
+            $table->unsignedInteger('jumlah_nominal');
             $table->date('tanggal_pemasukkan');
-            $table->integer('total_pemasukkan')->default(0);
+            $table->unsignedInteger('total_pemasukkan')->nullable();
             $table->timestamps();
         });
     }

@@ -21,9 +21,9 @@ class FundSeeder extends Seeder
         $totalPemasukkan = 0;
 
         for ($i = 0; $i < 30; $i++) {
-            $sumberDana = $faker->company();
-            $jumlahNominal = $faker->numberBetween(1000000, 10000000);
-            $tanggalPemasukkan = Carbon::create(2023, $faker->numberBetween(1, 12), $faker->numberBetween(1, 28));
+            $sumberDana = 'Dana Operasional Bulanan';
+            $jumlahNominal = 500000;
+            $tanggalPemasukkan =  Carbon::create(2023, $faker->numberBetween(1, 12), $faker->numberBetween(1, 28));
 
             Fund::create([
                 'sumber_dana' => $sumberDana,

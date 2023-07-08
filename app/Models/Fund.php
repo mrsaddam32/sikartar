@@ -40,6 +40,11 @@ class Fund extends Model
         $lastRecord->save();
     }
 
+    /**
+     * Get the activity that owns the Fund
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function activities()
     {
         return $this->hasMany(Activity::class, 'sumber_dana', 'id');
