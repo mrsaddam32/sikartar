@@ -19,15 +19,14 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-3">
-
           <!-- Profile Image -->
           <div class="card card-primary card-outline">
             <div class="card-body box-profile">
               <div class="text-center">
                 @if($user->photo_path)
-                  <img class="profile-user-img img-fluid img-circle border-primary"
+                  <img class="profile-user-img img-fluid img-circle border-primary object-fit-cover"
                     src="{{ asset($user->photo_path) }}"
-                    alt="{{ $user->name }}" height="100" width="100" style="background-position: center; object-fit: cover;">
+                    alt="{{ $user->name }}" height="100" width="100" style="background-position: center;">
                 @else
                   <img class="profile-user-img img-fluid img-circle"
                     src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random"
@@ -64,7 +63,7 @@
             </div><!-- /.card-header -->
             <div class="card-body">
               <div class="tab-content">
-                <div class="tab-pane" id="change_password">
+                <div class="tab-pane fade" id="change_password">
                   <form action="{{ route('user.profile.updatePassword', $user->id) }}" method="POST">
                     @method('patch')
                     @csrf
@@ -111,8 +110,7 @@
                   </form>
                 </div>
                 <!-- /.tab-pane -->
-
-                <div class="tab-pane active" id="update_profile">
+                <div class="tab-pane fade show active" id="update_profile">
                   <form action="{{ route('user.profile.update', $user->id) }}" method="POST"enctype="multipart/form-data">
                     @method('patch')
                     @csrf
@@ -120,9 +118,9 @@
                       <div class="col-md-12">
                         <div class="mb-3">
                           <label for="image" class="form-label">Image</label>
-                          <div style="display:flex;">
+                          <div class="d-flex align-items-center">
                             <img class="img-thumbnail img-fluid float-left" src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random" id="img" style="margin-right:10px;" width="200" height="200">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror border-0 m-auto" id="image" name="image" value="{{ old('image', $user->image) }}">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror border-0" id="image" name="image" value="{{ old('image', $user->image) }}">
                           </div>
                           @error('image')
                             <div class="invalid-feedback">

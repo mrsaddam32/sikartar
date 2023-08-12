@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
 
         for ($i = 0; $i < 15; $i++) {
             User::create([
-                'name' => $faker->name,
+                'name' => $faker->firstName() . ' ' . $faker->lastName(),
                 'email' => $faker->email,
                 'password' => bcrypt(env('DEFAULT_USER_PASSWORD', 'Userpassword123')),
                 'role_id' => 2,

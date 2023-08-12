@@ -182,7 +182,7 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -200,17 +200,20 @@ class DashboardController extends Controller
         $user->email = $request->email;
 
         if ($request->hasFile('image')) {
-            $oldImagePath = $user->photo_path;
-            $imagePath = $request->file('image')->hashName();
-            $request->file('image')->storeAs('public/images', $imagePath);
+            $userName = $user->name;
 
-            $user->photo_path = 'storage/images/' . $imagePath;
-            $user->photo_name = $request->file('image')->getClientOriginalName();
-
-            // Delete old image
-            if ($oldImagePath && Storage::exists($oldImagePath)) {
-                Storage::delete($oldImagePath);
+            if (strpos($userName, ' ') !== false) {
+                $userName = strtolower(str_replace(' ', '_', $userName));
+            } else {
+                $userName = strtolower($userName);
             }
+
+            $userImage = $request->file('image');
+            $imagePath = $userImage->hashName();
+
+            $userImage->storeAs('public/images/' . $userName . '/', $imagePath);
+            $user->photo_path = 'storage/images/' . $userName . '/' . $imagePath;
+            $user->photo_name = $userImage->getClientOriginalName();
         }
 
         $user->save();
