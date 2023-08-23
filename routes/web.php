@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FundController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,11 @@ Route::middleware(['isLogged'])->group(function () {
             Route::get('/edit', [FundController::class, 'edit'])->name('edit');
             Route::put('/update/{id}', [FundController::class, 'update'])->name('update');
             Route::delete('/delete/{id}', [FundController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/event_report', [ReportController::class, 'event_report'])->name('event_report');
+            Route::post('/event_report/print', [ReportController::class, 'print_event_report'])->name('print_event_report');
         });
     });
 

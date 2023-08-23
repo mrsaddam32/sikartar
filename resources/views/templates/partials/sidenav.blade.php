@@ -76,14 +76,14 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="#" class="nav-link" style="cursor: not-allowed;">
             <i class="nav-icon fas fa-solid fa-image"></i>
             <p>
               Gallery ❌
             </p>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
           <a href="{{ route('admin.keuangan.index') }}" class="nav-link {{ Route::is('admin.keuangan.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-solid fa-dollar-sign"></i>
@@ -111,7 +111,7 @@
               </a>
             </li>
             <li class="nav-item ml-3">
-              <a href="https://laravel.com" class="nav-link">
+              <a href="{{ route('admin.report.event_report') }}" class="nav-link {{ request()->is('admin/report/event_report') ? 'active' : '' }}">
                 <i class="fas fa-file mr-2"></i>
                 <p>
                   Event Reports
@@ -153,6 +153,34 @@
               Funds
             </p>
           </a>
+        </li>
+        <li class="nav-header">REPORTS SECTION</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-folder"></i>
+            <p>
+              Reports Management
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item ml-3">
+              <a href="#" class="nav-link" style="cursor: not-allowed;">
+                <i class="fas fa-file mr-2"></i>
+                <p>
+                  Fund Reports
+                </p>
+              </a>
+            </li>
+            <li class="nav-item ml-3">
+              <a href="https://laravel.com" class="nav-link">
+                <i class="fas fa-file mr-2"></i>
+                <p>
+                  Event Reports
+                </p>
+              </a>
+            </li>
+          </ul>
         </li>
         <li class="nav-header">PROFILE SECTION</li>
         <li class="nav-item">
