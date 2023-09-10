@@ -17,7 +17,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <form action="{{ route('admin.report.print_event_report') }}" method="POST">
+      <form id="report_form" method="POST">
         @csrf
         <div class="row">
           <div class="col-lg-6">
@@ -50,8 +50,9 @@
                               </div>
                           </div>
                       </div>
-                      <button class="btn btn-secondary" type="submit">Test</button>
-                  </div>
+                      <button class="btn btn-outline-danger mr-2" type="submit" name="export" value="export"><i class="fas fa-file-pdf"></i> Export</button>
+                      <button class="btn btn-outline-warning mr-2" type="submit" name="preview" value="preview"><i class="fas fa-eye"></i> Preview</button>
+                    </div>
               </div>
           </div>
         </div>
@@ -90,6 +91,20 @@
           format: 'MM/YYYY',
           useCurrent: false,
           timeZone: 'Asia/Jakarta'
+      });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("report_form");
+
+      form.addEventListener("submit", function (event) {
+          const submitAction = event.submitter.getAttribute("name");
+          if (submitAction === "export") {
+              form.action = "{{ route('admin.report.print_event_report') }}";
+          } else if (submitAction === "preview") {
+              form.action = "{{ route('admin.report.preview_pdf') }}";
+          }
       });
   });
 </script>

@@ -81,6 +81,7 @@ Route::middleware(['isLogged'])->group(function () {
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/event_report', [ReportController::class, 'event_report'])->name('event_report');
             Route::post('/event_report/print', [ReportController::class, 'print_event_report'])->name('print_event_report');
+            Route::post('/event_report/preview', [ReportController::class, 'preview_pdf'])->name('preview_pdf');
         });
     });
 

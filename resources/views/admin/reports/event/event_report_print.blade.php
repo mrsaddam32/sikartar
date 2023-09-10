@@ -74,32 +74,20 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>#</th>
-                                        <th>Event ID</th>
                                         <th>Event Name</th>
                                         <th>Resonsible Person</th>
+                                        <th>Event Budget</th>
                                         <th>Event Start Date</th>
-                                        <th>Event Status</th>
                                     </tr>
                                 </thead>
                                 @foreach ($activities as $activity)
                                     <tbody>
                                         <tr class="text-center">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $activity->activity_id }}</td>
                                             <td>{{ $activity->activity_name }}</td>
                                             <td>{{ $activity->responsible_person }}</td>
+                                            <td>Rp. {{ number_format($activity->activity_budget, 0, ',', '.') }}</td>
                                             <td>{{ $activity->activity_start_date }}</td>
-                                            <td>
-                                                @if($activity->activity_status == 'PENDING')
-                                                    <span class="badge badge-warning">{{ $activity->activity_status }}</span>
-                                                @elseif($activity->activity_status == 'APPROVED')
-                                                    <span class="badge badge-info">{{ $activity->activity_status }}</span>
-                                                @elseif($activity->activity_status == 'COMPLETED')
-                                                    <span class="badge badge-success">{{ $activity->activity_status }}</span>
-                                                @elseif($activity->activity_status == 'REJECTED')
-                                                    <span class="badge badge-danger">{{ $activity->activity_status }}</span>
-                                                @endif
-                                            </td>
                                         </tr>
                                     </tbody>
                                 @endforeach
