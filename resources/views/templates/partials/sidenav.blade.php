@@ -76,14 +76,14 @@
             </p>
           </a>
         </li>
-        {{-- <li class="nav-item">
-          <a href="#" class="nav-link" style="cursor: not-allowed;">
+        <li class="nav-item">
+          <a href="{{ route('admin.gallery.index') }}" class="nav-link {{ Route::is('admin.gallery.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-solid fa-image"></i>
             <p>
-              Gallery ❌
+              Gallery
             </p>
           </a>
-        </li> --}}
+        </li>
         <li class="nav-item">
           <a href="{{ route('admin.keuangan.index') }}" class="nav-link {{ Route::is('admin.keuangan.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-solid fa-dollar-sign"></i>

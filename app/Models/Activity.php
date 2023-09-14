@@ -62,4 +62,14 @@ class Activity extends Model
     {
         return $this->belongsToMany(User::class, 'activity_user', 'activity_id', 'user_id');
     }
+
+    /**
+     * Get the images for the activity.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class, 'activity_id', 'activity_id');
+    }
 }

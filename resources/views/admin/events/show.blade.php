@@ -32,8 +32,8 @@
                         <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
                         <div class="mb-3">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="files[]" multiple>
-                                <label class="custom-file-label" for="customFile" id="customFile">Choose file</label>
+                                <input type="file" class="custom-file-input" id="customFileFiles" name="files[]" multiple>
+                                <label class="custom-file-label" for="customFileFiles">Choose file</label>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -44,7 +44,40 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
+    <div class="modal fade" id="uploadImagesModal" tabindex="-1" aria-labelledby="uploadImagesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-5" id="uploadImagesModalLabel">Upload Images</h4>
+                    <button type="button" class="btn btn-transparent btn-close" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times text-white"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.event.uploadImages', ['activity_id' => $activity->activity_id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
+                        <div class="mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFileImages" name="files[]" multiple>
+                                <label class="custom-file-label" for="customFileImages">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image_description">Image Description</label>
+                            <input type="text" class="form-control" id="image_description" name="image_description">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <section class="content">
         <div class="card">
             <div class="card-header">
@@ -135,7 +168,6 @@
                                                 case 'pptx':
                                                     $iconClass = 'far fa-fw fa-file-powerpoint';
                                                     break;
-                                                // Add custom file extension and icon
                                                 default:
                                                     $iconClass = 'far fa-fw fa-file';
                                                     break;
@@ -149,11 +181,14 @@
                                     @endif
                                 </li>
                             </ul>
-                            <div class="text-center mt-5 mb-3">
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadFilesModal">
+                            <div class="text-left mt-5 mb-3">
+                                <button type="button" class="btn btn-primary btn-sm mr-1 mb-1" data-toggle="modal" data-target="#uploadFilesModal">
                                     <i class="fas fa-solid fa-plus mr-1"></i>Upload Files
                                 </button>
-                                <a href="{{ route('admin.event.index') }}" class="btn btn-sm btn-info text-white">Back to All Events</a>
+                                <button type="button" class="btn btn-primary btn-sm mr-1 mb-1" data-toggle="modal" data-target="#uploadImagesModal">
+                                    <i class="fas fa-solid fa-plus mr-1"></i>Upload Images
+                                </button>
+                                <a href="{{ route('admin.event.index') }}" class="btn btn-sm mr-1 mb-1 btn-info text-white">Back to All Events</a>
                             </div>
                         </div>
                     </div>
@@ -184,16 +219,18 @@
         @endif
     });
 
-    document.getElementById('customFile').addEventListener('change', function(e) {
-        var files = e.target.files;
+    const updateCustomFileLabel = (inputId) => {
+        let files = document.getElementById(inputId).files;
+        let label = document.querySelector('.custom-file-label[for="' + inputId + '"]');
+        label.textContent = files.length > 0 ? files.length + ' Files Selected' : 'Choose file';
+    }
 
-        if (files.length > 0) {
-            var label = document.querySelector('.custom-file-label');
-            label.textContent = files.length + ' Files Selected';
-        } else {
-            var label = document.querySelector('.custom-file-label');
-            label.textContent = 'Choose file';
-        }
+    document.getElementById('customFileFiles').addEventListener('change', function(e) {
+        updateCustomFileLabel('customFileFiles');
+    });
+
+    document.getElementById('customFileImages').addEventListener('change', function(e) {
+        updateCustomFileLabel('customFileImages');
     });
 </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\User;
 use App\Models\Fund;
 use App\Models\Outcome;
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -381,6 +382,51 @@ class ActivityController extends Controller
 
         // No files uploaded
         return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'No files uploaded!');
+    }
+
+    /**
+     * Upload images to storage.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadImages(Request $request)
+    {
+        $activity_id = $request->input('activity_id');
+        $activity = Activity::where('activity_id', $activity_id)->first();
+        $image_description = $request->input('image_description');
+
+        if (!$activity) {
+            return redirect()->route('admin.event.index')->with('error', 'Activity not found!');
+        }
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+            foreach ($files as $file) {
+                if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+                    return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'Only image files (JPEG, PNG, GIF) are allowed!');
+                }
+
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+                $file->storeAs('public/events/gallery/', $filename);
+
+                Gallery::create([
+                    'activity_id' => $activity_id,
+                    'image_path' => 'storage/events/gallery/' . $filename,
+                    'image_date' => now(),
+                    'image_description' => $image_description,
+                ]);
+            }
+
+            return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('success', 'Images have been uploaded successfully!');
+        }
+
+        // No files uploaded
+        return redirect()->route('admin.event.show', ['activities_id' => $activity_id])->with('error', 'No images uploaded!');
     }
 
     /**

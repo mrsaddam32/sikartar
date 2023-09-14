@@ -81,14 +81,16 @@
                                         @endphp
                                     @endif
                                 </td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.event.show', ['activities_id' => $activity->activity_id]) }}">
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-primary btn-sm mr-1" href="{{ route('admin.event.show', ['activities_id' => $activity->activity_id]) }}">
                                         <i class="fas fa-folder"></i> View
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.event.edit', ['activities_id' => $activity->activity_id]) }}">
-                                        <i class="fas fa-pencil-alt"></i> Edit
-                                    </a>
-                                    <form action="{{ route('admin.event.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="mx-1 d-inline">
+                                    @if ($activity->activity_status !== 'COMPLETED')
+                                        <a class="btn btn-info btn-sm mr-1" href="{{ route('admin.event.edit', ['activities_id' => $activity->activity_id]) }}">
+                                            <i class="fas fa-pencil-alt"></i> Edit
+                                        </a>
+                                    @endif
+                                    <form action="{{ route('admin.event.destroy', ['id' => $activity->activity_id]) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="activity_id" value="{{ $activity->activity_id }}">
