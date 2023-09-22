@@ -38,7 +38,7 @@
                                 @if ($images->count() > 0)
                                     @foreach ($images as $image)
                                         <div class="col-sm-2">
-                                            <a href="{{ asset($image->image_path) }}" data-toggle="lightbox" data-title="{{ $image->image_description }}" data-gallery="gallery"> <img src="{{ asset($image->image_path) }}" class="img-fluid mb-2 w-100 h-100" alt="{{ $image->image_description }}" /> </a>
+                                            <a href="{{ asset($image->image_path) }}" data-toggle="lightbox" data-title="{{ $image->image_description }}" data-gallery="gallery"> <img src="{{ asset($image->image_path) }}" class="img-fluid mb-2" alt="{{ $image->image_description }}" /> </a>
                                         </div>
                                     @endforeach
                                 @else

@@ -9,6 +9,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,7 @@ use App\Http\Controllers\GalleryController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('auth')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
@@ -39,6 +38,10 @@ Route::middleware(['isLogged'])->group(function () {
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::patch('/profile/{id}', [DashboardController::class, 'update'])->name('profile.update');
         Route::patch('/profile/password/{id}', [DashboardController::class, 'updatePassword'])->name('profile.updatePassword');
+        Route::get('/test', function () {
+            $title = 'Testing Purpose';
+            return view('test', compact('title'));
+        });
 
         Route::prefix('users')->name('users.')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');

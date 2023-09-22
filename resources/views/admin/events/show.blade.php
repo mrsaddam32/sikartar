@@ -77,7 +77,6 @@
             </div>
         </div>
     </div>
-    
     <section class="content">
         <div class="card">
             <div class="card-header">
@@ -111,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ $activity->activity_name }}</h3>
                             <p class="text-muted">{{ $activity->activity_description }}</p>
@@ -186,7 +185,7 @@
                                     <i class="fas fa-solid fa-plus mr-1"></i>Upload Files
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm mr-1 mb-1" data-toggle="modal" data-target="#uploadImagesModal">
-                                    <i class="fas fa-solid fa-plus mr-1"></i>Upload Images
+                                    <i class="fas fa-solid fa-image mr-1"></i>Upload Images
                                 </button>
                                 <a href="{{ route('admin.event.index') }}" class="btn btn-sm mr-1 mb-1 btn-info text-white">Back to All Events</a>
                             </div>
@@ -201,6 +200,7 @@
   <!-- /.content-wrapper -->
   <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
 <script>
     $(document).ready(function() {
         // Set toastr options

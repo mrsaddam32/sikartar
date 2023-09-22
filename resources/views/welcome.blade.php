@@ -1,25 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" id="home">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="shortcut icon" href="https://static-00.iconduck.com/assets.00/laravel-icon-497x512-uwybstke.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha512-Velp0ebMKjcd9RiCoaHhLXkR1sFoCCWXNp6w4zj1hfMifYB5441C+sKeBl/T/Ka6NjBiRfBBQRaQq65ekYz3UQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+      section:not(.visi_misi) {
+        height: 100vh;
+      }
+
       .navbar {
         height: 68px;
-        position: relative;
         z-index: 1;
       }
       
       /* Carousel base class */
       .carousel {
+        margin-top: -68px;
         margin-bottom: 4rem;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
         z-index: 0;
         background-color: rgba(0, 0, 0, 0.8);
       }
@@ -44,15 +45,15 @@
     <header>
       <nav class="navbar navbar-expand-lg bg-transparent">
         <div class="container">
-          <a class="navbar-brand text-white fw-bold" href="#">{{ config('app.name') }}</a>
+          <a class="navbar-brand text-white fw-bold" href="#home">{{ config('app.name') }}</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
-              <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
-              <a class="nav-link text-white active" aria-current="page" href="#">Visi & Misi</a>
-              <a class="nav-link text-white active" aria-current="page" href="#">Sejarah</a>
+              <a class="nav-link text-white active" aria-current="page" href="#home">Home</a>
+              <a class="nav-link text-white active" aria-current="page" href="#visi_misi">Visi & Misi</a>
+              <a class="nav-link text-white active" aria-current="page" href="#galeri">Galeri</a>
               <div class="d-flex align-items-center">
                 <a href="{{ route('auth.login') }}" class="btn btn-primary me-3">
                   Login
@@ -107,8 +108,75 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-      </div>      
+      </div>
+      <section class="visi_misi pt-5 mb-5" id="visi_misi">
+        <div class="container">
+          <div class="row text-center fw-bold mb-4">
+            <div class="col">
+              <h2>
+                Visi & Misi
+              </h2>
+              <hr class="w-50 mx-auto my-4">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <h2 class="text-center">Visi</h2>
+              <p class="text-justify">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores cupiditate, beatae at porro atque nulla doloribus aliquam doloremque veniam quod blanditiis! Odio corrupti numquam ad recusandae a similique iusto dolorum, quibusdam placeat. Nulla perspiciatis natus quae vero dolor earum? Nesciunt incidunt cumque ullam numquam a saepe, obcaecati sapiente aperiam amet!
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <h2 class="text-center">Misi</h2>
+              <p class="text-justify">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati, et iste? Quasi ex voluptatum adipisci dolorum esse reiciendis delectus, magni qui eius, excepturi, expedita laborum odit. Dolorum, ex porro unde corporis pariatur voluptates eaque voluptatibus vel saepe cum consectetur quaerat tempora itaque, eligendi ipsa impedit rerum nostrum debitis earum quae!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="galeri pt-5" id="galeri">
+        <div class="container">
+          <div class="row text-center fw-bold mb-4">
+            <h2>
+              Galeri
+            </h2>
+            <hr class="w-50 mx-auto my-4">
+          </div>
+          <div class="row">
+            @foreach ($images as $image)
+              <div class="col-lg-3">
+                <a href="{{ asset($image->image_path) }}" data-toggle="lightbox" data-title="{{ $image->image_description }}" data-gallery="gallery"> <img src="{{ asset($image->image_path) }}" class="img-fluid mb-2" alt="{{ $image->image_description }}" /> </a>
+              </div>
+            @endforeach
+          </div>
+        </div>
+      </section>
+      <div class="container">
+        <footer class="py-3 my-4">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-1">
+            <li class="nav-item"><a href="#home" class="nav-link px-2 text-body-secondary">Home</a></li>
+            <li class="nav-item"><a href="#visi_misi" class="nav-link px-2 text-body-secondary">Visi & Misi</a></li>
+            <li class="nav-item"><a href="#galeri" class="nav-link px-2 text-body-secondary">Galeri</a></li>
+          </ul>
+          <p class="text-center text-body-secondary">&copy; 2023 {{ config('app.name') }}</p>
+        </footer>
+      </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- Ekko Lightbox JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" integrity="sha512-Y2IiVZeaBwXG1wSV7f13plqlmFOx8MdjuHyYFVoYzhyRr3nH/NMDjTBSswijzADdNzMyWNetbLMfOpIPl6Cv9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/filterizr/2.2.4/filterizr.min.js" integrity="sha512-1stq1YFxvbYbVjV9Hu964pds36UyBIQ3H8EFMAaaRXeqKsqqJlGucxH6ZG9tjk0DdzhS52nPpwDaoZYaUzaISw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          alwaysShowClose: true
+        });
+      });
+    </script>
   </body>
 </html>
