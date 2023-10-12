@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('activity_id', 8)->unique();
             $table->string('activity_name');
             $table->string('responsible_person');
-            $table->string('activity_description');
+            $table->longText('activity_description');
             $table->integer('activity_budget');
             $table->enum('activity_status', ['PENDING', 'REJECTED', 'APPROVED', 'COMPLETED']);
             $table->string('activity_location');

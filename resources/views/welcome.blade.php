@@ -6,7 +6,7 @@
     <title>{{ config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="shortcut icon" href="https://static-00.iconduck.com/assets.00/laravel-icon-497x512-uwybstke.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha512-Velp0ebMKjcd9RiCoaHhLXkR1sFoCCWXNp6w4zj1hfMifYB5441C+sKeBl/T/Ka6NjBiRfBBQRaQq65ekYz3UQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('dist/css/lightbox.css') }}">
     <style>
       section:not(.visi_misi) {
         height: 100vh;
@@ -54,6 +54,7 @@
               <a class="nav-link text-white active" aria-current="page" href="#home">Home</a>
               <a class="nav-link text-white active" aria-current="page" href="#visi_misi">Visi & Misi</a>
               <a class="nav-link text-white active" aria-current="page" href="#galeri">Galeri</a>
+              <a class="nav-link text-white active" aria-current="page" href="#kegiatan">Kegiatan</a>
               <div class="d-flex align-items-center">
                 <a href="{{ route('auth.login') }}" class="btn btn-primary me-3">
                   Login
@@ -144,38 +145,90 @@
             <hr class="w-50 mx-auto my-4">
           </div>
           <div class="row">
-            @foreach ($images as $image)
-              <div class="col-lg-3">
-                <a href="{{ asset($image->image_path) }}" data-toggle="lightbox" data-title="{{ $image->image_description }}" data-gallery="gallery"> <img src="{{ asset($image->image_path) }}" class="img-fluid mb-2" alt="{{ $image->image_description }}" /> </a>
+            @if ($images->count() > 0)
+              @foreach ($images as $image)
+                <div class="col-lg-3">
+                  <a href="{{ asset($image->image_path) }}" data-lightbox="image-1" data-title="{{ $image->image_description }}">
+                    <img src="{{ asset($image->image_path) }}" class="img-fluid mb-2" alt="{{ $image->image_description }}" />  
+                  </a>
+                </div>
+              @endforeach
+            @else
+              <div class="col-lg-12">
+                <h3 class="text-center">There's no images.</h3>
               </div>
-            @endforeach
+            @endif
           </div>
         </div>
       </section>
-      <div class="container">
-        <footer class="py-3 my-4">
-          <ul class="nav justify-content-center border-bottom pb-3 mb-1">
-            <li class="nav-item"><a href="#home" class="nav-link px-2 text-body-secondary">Home</a></li>
-            <li class="nav-item"><a href="#visi_misi" class="nav-link px-2 text-body-secondary">Visi & Misi</a></li>
-            <li class="nav-item"><a href="#galeri" class="nav-link px-2 text-body-secondary">Galeri</a></li>
-          </ul>
-          <p class="text-center text-body-secondary">&copy; 2023 {{ config('app.name') }}</p>
-        </footer>
-      </div>
+      <section class="kegiatan pt-5" id="kegiatan">
+        <div class="container">
+          <div class="row text-center fw-bold mb-4">
+            <h2>
+              Kegiatan
+            </h2>
+            <hr class="w-50 mx-auto my-4">
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="accordion" id="accordionExample">
+                @foreach ($activities as $key => $activity)
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $key }}" aria-expanded="{{ $key === 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $key }}">
+                        {{ $activity->activity_name }}
+                      </button>
+                    </h2>
+                    <div id="collapse{{ $key }}" class="accordion-collapse collapse {{ $key === 0 ? 'show' : '' }}" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        {{ $activity->activity_description }}
+                      </div>
+                    </div>
+                  </div>
+                @endforeach
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+    <div class="container-fluid">
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-1">
+          <li class="nav-item"><a href="#home" class="nav-link px-2 text-body-secondary">Home</a></li>
+          <li class="nav-item"><a href="#visi_misi" class="nav-link px-2 text-body-secondary">Visi & Misi</a></li>
+          <li class="nav-item"><a href="#galeri" class="nav-link px-2 text-body-secondary">Galeri</a></li>
+          <li class="nav-item"><a href="#kegiatan" class="nav-link px-2 text-body-secondary">Kegiatan</a></li>
+        </ul>
+        <p class="text-center text-body-secondary">&copy; 2023 {{ config('app.name') }}</p>
+      </footer>
+    </div>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- Ekko Lightbox JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" integrity="sha512-Y2IiVZeaBwXG1wSV7f13plqlmFOx8MdjuHyYFVoYzhyRr3nH/NMDjTBSswijzADdNzMyWNetbLMfOpIPl6Cv9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/filterizr/2.2.4/filterizr.min.js" integrity="sha512-1stq1YFxvbYbVjV9Hu964pds36UyBIQ3H8EFMAaaRXeqKsqqJlGucxH6ZG9tjk0DdzhS52nPpwDaoZYaUzaISw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- LightBox 2 -->
+    <script src="{{ asset('dist/js/lightbox.min.js') }}"></script>
     <script>
-      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-          alwaysShowClose: true
+      document.addEventListener("DOMContentLoaded", function () {
+        const accordionButtons = document.querySelectorAll("#accordionExample .accordion-button");
+
+        accordionButtons.forEach((button, index) => {
+          button.addEventListener("click", () => {
+            // Close all accordion except the clicked one
+            const accordions = document.querySelectorAll(".accordion-collapse");
+            accordions.forEach((accordion, i) => {
+              if (i !== index) {
+                accordion.classList.remove("show");
+              }
+            });
+          });
         });
+
+        // Click the first accordion button
+        if (accordionButtons.length > 0) {
+          accordionButtons[0].click();
+        }
       });
     </script>
   </body>

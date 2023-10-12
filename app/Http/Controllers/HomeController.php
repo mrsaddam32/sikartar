@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -15,7 +16,9 @@ class HomeController extends Controller
     public function index()
     {
         $images = Gallery::limit(6)->get();
-        return view('welcome', compact('images'));
+        $activities = Activity::get();
+
+        return view('welcome', compact('images', 'activities'));
     }
 
     /**
